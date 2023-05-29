@@ -17,7 +17,7 @@ function Nav(props) {
     }
     fetchCategories();
   }, [dispatch]);
-  
+
   const renderCategoryModal = (categories) => {
     return categories.length !== 0
       ? categories.map((category, index) => (
