@@ -50,7 +50,7 @@ function Search() {
   };
 
   return (
-    <form className="search-form">
+    <form className="search-form d-none d-md-block">
       <div className="search-bar">
         <input
           type="text"
