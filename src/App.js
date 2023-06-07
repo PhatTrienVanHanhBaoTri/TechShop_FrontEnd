@@ -9,6 +9,7 @@ import Home from "pages/Home/main";
 import Login from "pages/Login/login";
 import Product from "pages/Product/main";
 import ShoppingCart from "pages/ShoppingItems/main";
+import { Register } from "pages/Register/register";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
@@ -46,6 +47,9 @@ function App() {
 
                 <Route path="/login">
                   <Login />
+                </Route>
+                <Route path="/register">
+                  <Register />
                 </Route>
                 <Route path="/sales">
                   <Sale />

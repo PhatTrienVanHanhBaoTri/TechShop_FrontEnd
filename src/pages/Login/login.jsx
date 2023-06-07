@@ -1,7 +1,7 @@
 import { cookiesService } from "helpers/cookiesService";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, Link } from "react-router-dom";
 import { login, updateLoggedInStatus } from "utilities/slices/userSlice";
 import "./_login.scss";
 
@@ -44,8 +44,8 @@ function Login() {
 
   return (
     <div className="row">
-      <div className="col-6 login-background"></div>
-      <div className="col-6 login-wrapper">
+      <div className="col-sm-6 login-background"></div>
+      <div className="col-sm-6 login-wrapper">
         <div className="login-wrapper-content">
           <div className="login-title">Welcome to TechShop</div>
           <form>
@@ -65,9 +65,10 @@ function Login() {
               placeholder="Enter your password"
             />
             <div className="text-center">
-              <button onClick={handleSubmit} className="btn">
+              <button onClick={handleSubmit} className="btn mb-3">
                 Get Started
               </button>
+              <Link to="/register">Create account</Link>
             </div>
           </form>
           <div>{error}</div>
