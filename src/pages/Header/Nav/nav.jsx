@@ -15,6 +15,7 @@ function Nav(props) {
     async function fetchCategories() {
       await dispatch(getCategories());
     }
+
     fetchCategories();
   }, [dispatch]);
 
@@ -35,41 +36,54 @@ function Nav(props) {
   };
 
   return (
-    <div className="nav-bar d-flex">
+    <ul className="pl-md-3 navbar-nav m-auto mb-lg-0 d-flex justify-item-center align-items-center">
+      {/* <div> */}
       <Search />
-      <nav className="nav">
-        <ul>
-          <li>
-            <NavLink activeClassName="active" to="/home" exact>
-              Home
-            </NavLink>
-          </li>
-          <li className="dropdown-switcher">
-            <NavLink activeClassName="active" to="/products">
-              Products
-            </NavLink>
-            <div className="dropdown">
-              <Row>{renderCategoryModal(stateCategories.data)}</Row>
-            </div>
-          </li>
-          <li>
-            <NavLink activeClassName="active" to="/shopping-cart">
-              Shopping Cart
-            </NavLink>
-          </li>
-          <li>
-            <NavLink activeClassName="active" to="/wish-list">
-              Wish List
-            </NavLink>
-          </li>
-          <li>
-            <NavLink activeClassName="active" to="/contacts">
-              Contacts
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
-    </div>
+      {/* </div> */}
+      <li className="nav-item pt-md-3 m-3">
+        <NavLink
+          className="text-nowrap"
+          activeClassName="active"
+          to="/home"
+          exact
+        >
+          Home
+        </NavLink>
+      </li>
+
+      <li className="nav-item pt-md-3 m-3 dropdown-switcher">
+        <NavLink
+          className="text-nowrap"
+          activeClassName="active"
+          to="/products"
+        >
+          Products
+        </NavLink>
+        <div className="dropdown d-md-block d-none">
+          <Row>{renderCategoryModal(stateCategories.data)}</Row>
+        </div>
+      </li>
+
+      <li className="nav-item pt-md-3 m-3">
+        <NavLink
+          className="text-nowrap"
+          activeClassName="active"
+          to="/wish-list"
+        >
+          Wish List
+        </NavLink>
+      </li>
+
+      <li className="nav-item pt-md-3 m-3">
+        <NavLink
+          className="text-nowrap"
+          activeClassName="active"
+          to="/contacts"
+        >
+          Contacts
+        </NavLink>
+      </li>
+    </ul>
   );
 }
 

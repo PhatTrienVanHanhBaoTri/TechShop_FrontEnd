@@ -27,7 +27,7 @@ function UserIcon() {
   const renderAvatar = (loginStatus) => {
     //console.log(loginStatus);
     return loginStatus ? (
-      <div className="dropdown-switcher">
+      <div className="dropdown-switcher d-md-block d-none">
         <NavLink activeClassName="active" to="/profile">
           <img src={avatar} alt="User Avatar" />
         </NavLink>
@@ -35,7 +35,8 @@ function UserIcon() {
       </div>
     ) : (
       <NavLink activeClassName="active" to="/login">
-        <i className="fa fa-user"></i>
+        <i className="fa fa-user d-md-block d-none"></i>
+        <p className="text-center m-0 d-block d-md-none">Login</p>
       </NavLink>
     );
   };

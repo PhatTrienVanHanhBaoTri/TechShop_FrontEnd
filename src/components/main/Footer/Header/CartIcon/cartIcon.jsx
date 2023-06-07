@@ -16,9 +16,9 @@ function CartIcon() {
     <NavLink
       activeClassName="active"
       to="/shopping-cart"
-      className="cart-items"
-    >
-      <i className="fas fa-shopping-cart">{renderCartQuantity(itemQuantity)}</i>
+      className="cart-items">
+        <i className="d-md-block d-none fas fa-shopping-cart">{renderCartQuantity(itemQuantity)}</i>
+        <p className="text-center m-0 d-block d-md-none">{renderCartQuantity(itemQuantity)}Shopping Cart</p>
     </NavLink>
   );
 }
