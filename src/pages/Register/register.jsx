@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { register } from "utilities/slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { register, updateError } from "utilities/slices/userSlice";
+import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import "./_register.scss";
 
 export const Register = () => {
   const dispatch = useDispatch();
   const [info, setInfo] = useState({});
+  const history = useHistory();
+  const { isSuccess, error } = useSelector((state) => state.user.data);
   const handleChangeInputText = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     setInfo({ ...info, [name]: value });
+    dispatch(updateError({ error: "" }));
   };
 
   const handleSubmit = (e) => {
@@ -21,6 +25,10 @@ export const Register = () => {
     }
     submitToRegister();
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (isSuccess) history.push("/login");
+  }, [isSuccess, history, dispatch]);
   return (
     <div className="row w-100">
       <div className="col-sm-5 register-background"></div>
@@ -67,7 +75,7 @@ export const Register = () => {
                   onChange={handleChangeInputText}
                   className="mb-3"
                   type="date"
-                  name="DOB"
+                  name="dob"
                   required
                   placeholder="Enter your date of birth"
                 />
@@ -108,9 +116,9 @@ export const Register = () => {
               </div>
             </div>
 
-            {/* <div className="mb-3" style={{ color: "red" }}>
+            <div className="mb-3" style={{ color: "red" }}>
               {error}
-            </div> */}
+            </div>
             <div className="text-center mt-2">
               <button
                 onClick={handleSubmit}

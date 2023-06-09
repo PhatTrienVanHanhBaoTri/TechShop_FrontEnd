@@ -20,6 +20,15 @@ export const register = createAsyncThunk("user/register", async (params) => {
   return token;
 });
 
+export const forgotPassword = createAsyncThunk("user/forgot-password", async (params) => {
+  const token = await UserApi.forgotPassword(params);
+  return token;
+});
+
+export const resetPassword = createAsyncThunk("user/reset-password", async (params) => {
+  const token = await UserApi.resetPassword(params);
+  return token;
+});
 export const initialStateUseLoggedIn = () => {
   let result = cookiesService.getCookies("user");
   return result === undefined || result === null ? false : true;
@@ -28,7 +37,11 @@ export const initialStateUseLoggedIn = () => {
 const user = createSlice({
   name: "user",
   initialState: {
-    data: { isLoggedIn: initialStateUseLoggedIn(), error: "" },
+    data: { 
+      isLoggedIn: initialStateUseLoggedIn(),
+      isSuccess: null,
+      error: "",
+    },
   },
   reducers: {
     updateLoggedInStatus: (state, action) => {
@@ -36,7 +49,8 @@ const user = createSlice({
     },
       updateError: (state, action) => {
       state.data.error = action.payload.error;
-    }
+    },
+   
   },
   extraReducers: {
     [login.pending]: (state) => {
@@ -46,11 +60,32 @@ const user = createSlice({
       state.data.isLoggedIn = true;
       state.data.error = "";
     },
-    [login.rejected]: (state) => {
-      console.log("login failed");
+    [login.rejected]: (state, action) => {
       state.data.error = "Username or password is incorrect";
     },
+    [register.fulfilled]: (state, action) => {
+      state.data.isSuccess = true;
+    },
+    [register.rejected]: (state, action) => {
+      state.data.isSuccess = false;
+      state.data.error = "Your email address is already registered";
+    },
+    [forgotPassword.fulfilled]: (state, action) => {
+       state.data.isSuccess = true;
+    },
+    [forgotPassword.rejected]: (state, action) => {
+      state.data.isSuccess = false;
+      state.data.error = "Your email is not valid";
+    },
+    [resetPassword.fulfilled]: (state, action) => {
+      state.data.isSuccess = true;
+    },
+    [resetPassword.rejected]: (state, action) => {
+      state.data.isSuccess = false;
+      state.data.isSuccessResetPassword = "Your OTP is not valid";
+    }
   },
+  serializableCheck: false,
 });
 export default user.reducer;
-export const { updateLoggedInStatus, updateError } = user.actions;
+export const { updateLoggedInStatus, updateError,updateErrorSendOTP, updateErrorResetPassword } = user.actions;

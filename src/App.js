@@ -10,6 +10,8 @@ import Login from "pages/Login/login";
 import Product from "pages/Product/main";
 import ShoppingCart from "pages/ShoppingItems/main";
 import { Register } from "pages/Register/register";
+import { ForgotPassword } from "pages/ForgotPassword/forgotPassword";
+import { ResetPassword } from "pages/ResetPassword/resetPassword";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
@@ -49,6 +51,12 @@ function App() {
                 </Route>
                 <Route path="/register">
                   <Register />
+                </Route>
+                <Route path = "/forgot-password"> 
+                <ForgotPassword/>
+                </Route>
+                  <Route path = "/reset-password"> 
+                <ResetPassword/>
                 </Route>
                 <Route path="/sales">
                   <Sale />

@@ -31,6 +31,7 @@ function Login() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const checkLoggedInStatus = () => {
       const status = cookiesService.getCookies("user");
       if (status === undefined && isLoggedIn)
@@ -69,7 +70,9 @@ function Login() {
               placeholder="Enter your password"
             />
             <div className="forgot-password pt-1">
-              <p className="">Forgot password?</p>
+              <Link to="/forgot-password">
+                <p className="">Forgot password?</p>
+              </Link>
             </div>
             <div className="mb-2" style={{ color: "red" }}>
               {error}
