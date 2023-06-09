@@ -38,7 +38,6 @@ function Nav(props) {
   return (
     <ul className="pl-md-3 navbar-nav m-auto mb-lg-0 d-flex justify-item-center align-items-center">
       {/* <div> */}
-      <Search />
       {/* </div> */}
       <li className="nav-item pt-md-3 m-3">
         <NavLink
