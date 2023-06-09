@@ -15,6 +15,11 @@ export const login = createAsyncThunk("user/login", async (params) => {
   return token;
 });
 
+export const register = createAsyncThunk("user/register", async (params) => {
+  const token = await UserApi.register(params);
+  return token;
+});
+
 export const initialStateUseLoggedIn = () => {
   let result = cookiesService.getCookies("user");
   return result === undefined || result === null ? false : true;
@@ -28,8 +33,10 @@ const user = createSlice({
   reducers: {
     updateLoggedInStatus: (state, action) => {
       state.data.isLoggedIn = action.payload.isLoggedIn;
-
     },
+      updateError: (state, action) => {
+      state.data.error = action.payload.error;
+    }
   },
   extraReducers: {
     [login.pending]: (state) => {
@@ -46,4 +53,4 @@ const user = createSlice({
   },
 });
 export default user.reducer;
-export const { updateLoggedInStatus } = user.actions;
+export const { updateLoggedInStatus, updateError } = user.actions;

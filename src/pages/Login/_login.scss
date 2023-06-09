@@ -49,28 +49,14 @@
           outline: none;
         }
       }
-      button {
-        background: #e77733;
-        width: 100%;
-        border: 1px solid #e77733;
-        border-radius: 10px;
-        color: #f5f5f5;
-        &:hover {
-          background: #f5f5f5;
-          color: #e77733;
-          outline: solid 1px #e77733;
-        }
-      }
-      .btn-secondary {
-        background: #f5f5f5;
-        width: 100%;
-        border: none;
-        border-radius: 10px;
-        color: #f5f5f5;
-        &:hover {
-          background: #f5f5f5;
-          color: #e77733;
-          outline: solid 1px #e77733;
+      .forgot-password {
+        display: flex;
+        justify-content: end;
+        margin-bottom: 1.25rem;
+        p {
+          width: fit-content;
+          margin: 0;
+          font-size: 0.85rem;
         }
       }
     }
@@ -96,7 +82,7 @@
         form {
           h6,
           p,
-          a {
+          > a {
             color: #f5f5f5;
           }
         }

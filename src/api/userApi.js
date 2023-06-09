@@ -23,16 +23,19 @@ const UserApi = {
       });
   },
     register: async (params) => {
-    let { email, fullname, pswd, DOB, phone, address, gender } = params;
+    let { email, fullname, pswd, DOB, phone, address, gender} = params;
     const url = `${UrlConstant.REGISTER}`;
     const data = JSON.stringify({ email, fullname, pswd, DOB, phone, address, gender });
-
+    
     return axiosClient
       .post(url, data)
       .then((response) => {
+        console.log(response);
         return response;
       })
       .catch((error) => {
+        console.log(error);
+
         return Promise.reject(error);
       });
   },
