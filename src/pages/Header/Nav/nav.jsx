@@ -9,7 +9,7 @@ import { getCategories } from "utilities/slices/categorySlice";
 function Nav(props) {
   const stateCategories = useSelector((state) => state.category);
   const dispatch = useDispatch();
-  const state = useSelector(state => state);
+  const state = useSelector((state) => state);
 
   // get categories
   useEffect(() => {
@@ -38,8 +38,6 @@ function Nav(props) {
 
   return (
     <ul className="pl-md-3 navbar-nav m-auto mb-lg-0 d-flex justify-item-center align-items-center">
-      {/* <div> */}
-      {/* </div> */}
       <li className="nav-item pt-md-3 m-3">
         <NavLink
           className="text-nowrap"
@@ -84,18 +82,17 @@ function Nav(props) {
         </NavLink>
       </li>
 
-      {state.user.data.info.roleID === 1 && 
-        (<li className="nav-item pt-md-3 m-3">
-            <NavLink
-              className="text-nowrap"
-              activeClassName="active"
-              to="/manageProducts"
-            >
-              Manage Products
-            </NavLink>
-        </li>)
-      }
-      
+      {state.user.data.info.roleID === 1 && (
+        <li className="nav-item pt-md-3 m-3">
+          <NavLink
+            className="text-nowrap"
+            activeClassName="active"
+            to="/manageProducts"
+          >
+            Manage Products
+          </NavLink>
+        </li>
+      )}
     </ul>
   );
 }
