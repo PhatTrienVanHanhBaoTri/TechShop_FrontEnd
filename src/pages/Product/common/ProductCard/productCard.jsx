@@ -53,7 +53,7 @@ function ProductCard(props) {
     <div className="product-card">
       <Link to={`/products/${product.categorySlug}/${product.productID}`}>
         <div className="product-photo">
-          {images[0] !== "" ? <img src={images[0]} alt="Apple watch" /> : ""}
+          {/* {images[0] !== "" ? <img src={images[0]} alt="Apple watch" /> : ""} */}
           <WishIcon id={product.productID} />
           <div
             className="product-action"

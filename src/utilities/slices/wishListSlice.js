@@ -21,7 +21,7 @@ const wishList = createSlice({
           ? []
           : [...cookiesService.getCookies("wishList")];
       let isExisted = false;
-      let newProdutcs = state.products.filter((product) => {
+      let newProducts = state.products.filter((product) => {
         if (product !== action.payload) {
           return product;
         } else {
@@ -30,7 +30,7 @@ const wishList = createSlice({
         }
       });
       if (!isExisted) state.products.push(action.payload);
-      else state.products = [...newProdutcs];
+      else state.products = [...newProducts];
 
       cookiesService.setCookies("wishList", JSON.stringify(state.products), {
         path: "/",

@@ -12,13 +12,13 @@ ProductInfo.defaultProps = {
   products: {},
 };
 
-const renderTechInfo = (shortTech) => {
-  if (shortTech !== undefined) {
-    var shortTechInfo = shortTech.replace(/'/g, '"');
-    shortTechInfo = JSON.parse(shortTechInfo);
-    return shortTechInfo.map((info, index) => <p key={index}>{info}</p>);
-  } else return "";
-};
+// const renderTechInfo = (shortTech) => {
+//   if (shortTech !== undefined) {
+//     var shortTechInfo = shortTech.replace(/'/g, '"');
+//     shortTechInfo = JSON.parse(shortTechInfo);
+//     return shortTechInfo.map((info, index) => <p key={index}>{info}</p>);
+//   } else return "";
+// };
 
 function ProductInfo(props) {
   const { product } = props;
@@ -42,7 +42,7 @@ function ProductInfo(props) {
       </div>
       <div className="row mt-4 mb-4">
         <div className="col-lg-7 short-tech-info">
-          {renderTechInfo(product.shortTech)}
+          {/* {renderTechInfo(product.shortTech)} */}
         </div>
         <div className="col-lg-5">
           <ProductAction
