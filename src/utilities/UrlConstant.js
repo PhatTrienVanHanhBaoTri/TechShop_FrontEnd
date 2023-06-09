@@ -29,6 +29,12 @@ export const GET_COUPON_BY_ID = "/coupons"
 
 // USER
 export const LOGIN = "api/v1/auth/login"
+export const REGISTER = "api/v1/auth/register"
+export const FORGOT_PASSWORD = "api/v1/auth/forgotPassword"
+export const RESET_PASSWORD = "api/v1/auth/resetPassword"
+
+
+
 export const GET_USER_SHIPPING_INFO = "/api/v1/user/shippingInfo"
 export const PLACE_ORDER = "/api/v1/invoice"
 
