@@ -33,7 +33,7 @@ function ProductCard(props) {
     dispatch(action);
   };
 
-  const handleAddToCart = (e, id, name, price) => {
+  const handleAddToCart = (e, id, name, price, slug) => {
     e.preventDefault();
     if (!loading) {
       dispatch(
@@ -42,6 +42,7 @@ function ProductCard(props) {
           quantity: 1,
           name: name,
           price: price,
+          slug: slug
         })
       );
       alert();
@@ -74,7 +75,8 @@ function ProductCard(props) {
                   e,
                   product.productID,
                   product.productName,
-                  product.productPrice
+                  product.productPrice,
+                  product.categorySlug
                 );
               }}
               disabled={loading}
