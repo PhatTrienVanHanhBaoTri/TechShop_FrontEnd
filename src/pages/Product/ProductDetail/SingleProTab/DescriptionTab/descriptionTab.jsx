@@ -6,18 +6,12 @@ import "./_descriptionTab.scss";
 const DescriptionTab = (props) => {
   const { longDescrip } = props;
 
-  const renderDescrips = (descrips) => {
-    if(descrips !== undefined){
-      var description = descrips.replace(/'/g, '"');
-      description = JSON.parse(description);
-      return description.map((item, index) => (
-          <React.Fragment key={index}>
-            <h4>{item.header}</h4>
-            <p>{item.content}</p>
-          </React.Fragment>
-        ));
-    }
-    return "";
+  const renderDescription = (description) => {
+    return (
+      <React.Fragment>
+        <p>{description}</p>
+      </React.Fragment>
+    );
   };
 
   return (
@@ -28,7 +22,7 @@ const DescriptionTab = (props) => {
       </div>
       <div className="col-lg-5"></div>
       <div className="pro-descrip-content">
-        {renderDescrips(longDescrip)}
+        {renderDescription(longDescrip)}
       </div>
     </div>
   );
