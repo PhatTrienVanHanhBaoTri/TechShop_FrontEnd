@@ -14,6 +14,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import "./_app.scss";
+import ManageProduct from "pages/ManageProduct/ManageProduct";
 
 function App() {
   return (
@@ -44,6 +45,10 @@ function App() {
                 {/* <News />
                 </Route> */}
 
+                <Route path="/manageProducts">
+                  <ManageProduct />
+                </Route>
+
                 <Route path="/login">
                   <Login />
                 </Route>
@@ -58,7 +63,7 @@ function App() {
                 </PrivateRoute>
               </Switch>
             </ScrollToTopRouter>
-            
+
             <Footer />
           </div>
         </Router>

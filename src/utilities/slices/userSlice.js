@@ -23,7 +23,7 @@ export const initialStateUseLoggedIn = () => {
 const user = createSlice({
   name: "user",
   initialState: {
-    data: { isLoggedIn: initialStateUseLoggedIn(), error: "" },
+    data: { isLoggedIn: initialStateUseLoggedIn(), error: "", info: {} },
   },
   reducers: {
     updateLoggedInStatus: (state, action) => {
@@ -38,6 +38,7 @@ const user = createSlice({
     [login.fulfilled]: (state, action) => {
       state.data.isLoggedIn = true;
       state.data.error = "";
+      state.data.info = action.payload;
     },
     [login.rejected]: (state) => {
       console.log("login failed");
