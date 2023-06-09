@@ -9,6 +9,7 @@ import { getCategories } from "utilities/slices/categorySlice";
 function Nav(props) {
   const stateCategories = useSelector((state) => state.category);
   const dispatch = useDispatch();
+  const state = useSelector(state => state);
 
   // get categories
   useEffect(() => {
@@ -82,6 +83,19 @@ function Nav(props) {
           Contacts
         </NavLink>
       </li>
+
+      {state.user.data.info.roleID === 1 && 
+        (<li className="nav-item pt-md-3 m-3">
+            <NavLink
+              className="text-nowrap"
+              activeClassName="active"
+              to="/manageProducts"
+            >
+              Manage Products
+            </NavLink>
+        </li>)
+      }
+      
     </ul>
   );
 }

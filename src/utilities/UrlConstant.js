@@ -44,3 +44,5 @@ export const GET_DETAILED_ORDER = "/api/v1/invoice"
 
 // TOKEN
 export const REFRESH_TOKEN = "/refresh"
+
+export const GET_USER_BY_EMAIL = "/api/v1/user"

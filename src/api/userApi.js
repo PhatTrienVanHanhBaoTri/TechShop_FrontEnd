@@ -22,6 +22,10 @@ const UserApi = {
         return Promise.reject(error);
       });
   },
+  getUserDetail: async (email) => {
+    const url = `${UrlConstant.GET_USER_BY_EMAIL}/${email}`;
+    return axiosClient.get(url);
+  },
     register: async (params) => {
     let { email, fullname, pswd, DOB, phone, address, gender } = params;
     const url = `${UrlConstant.REGISTER}`;

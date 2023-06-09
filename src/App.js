@@ -14,9 +14,10 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import "./_app.scss";
+import ManageProduct from "pages/ManageProduct/ManageProduct";
 
 function App() {
-  console.log("app");
+
   return (
     <div className="wrapper">
       <div className="main-content">
@@ -44,6 +45,10 @@ function App() {
 
                 {/* <News />
                 </Route> */}
+                
+                <Route path="/manageProducts">
+                  <ManageProduct />
+                </Route>
 
                 <Route path="/login">
                   <Login />
