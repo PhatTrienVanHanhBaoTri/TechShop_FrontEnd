@@ -20,10 +20,10 @@ function Header() {
 						aria-controls="navbarText"
 						aria-expanded="true"
 						aria-label="Toggle navigation">
-							<span class="navbar-toggler-icon">m</span>
+							<span className="navbar-toggler-icon">m</span>
 					</button>
 
-					<div class="collapse container-fluid navbar-collapse" id="navbarText" style={{ backgroundColor: "rgb(252, 235, 198)" }}>
+					<div className="collapse container-fluid navbar-collapse" id="navbarText" style={{ backgroundColor: "rgb(252, 235, 198)" }}>
 						<Nav />
 
 						<Info />
