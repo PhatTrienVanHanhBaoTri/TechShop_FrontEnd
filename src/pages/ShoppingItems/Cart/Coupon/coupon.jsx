@@ -18,11 +18,24 @@ function Coupon() {
     }, 300);
   };
 
-  const submitCoupon = async (id) => {
+  const submitCoupon = async (input) => {
     // TODO: solve when status code is 404
-    let response = await CouponApi.getCouponById(id);
-    if (response !== null) setCouponStatus("available");
-    else setCouponStatus("unavailable");
+    let response = await CouponApi.getAllCoupons();
+    let valid = false;
+
+    for (let i = 0; i < response.length; i++) {
+      const coupon = response[i];
+
+      if (coupon.couponCode === input) {
+        valid = true;
+      }
+    }
+
+    if (!valid) {
+      setCouponStatus("unavailable");
+    } else {
+      setCouponStatus("available");
+    }
   };
 
   const renderCouponStatus = (status) => {
@@ -39,7 +52,7 @@ function Coupon() {
         <h4>Coupon Discount</h4>
       </div>
       <p>Enter your coupon code if you have one!</p>
-      <div>
+      <div className="d-flex flex-column">
         <input
           placeholder="Enter your code here"
           value={coupon}

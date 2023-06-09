@@ -1,5 +1,4 @@
 const parseImages = (imagesString) => {
-  console.log(imagesString);
   // if (imagesString !== undefined) {
   //   var images = imagesString.replace(/'/g, '"');
   //   images = JSON.parse("");

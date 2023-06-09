@@ -17,7 +17,6 @@ import "./_app.scss";
 import ManageProduct from "pages/ManageProduct/ManageProduct";
 
 function App() {
-
   return (
     <div className="wrapper">
       <div className="main-content">
@@ -45,7 +44,7 @@ function App() {
 
                 {/* <News />
                 </Route> */}
-                
+
                 <Route path="/manageProducts">
                   <ManageProduct />
                 </Route>
@@ -64,7 +63,7 @@ function App() {
                 </PrivateRoute>
               </Switch>
             </ScrollToTopRouter>
-            
+
             <Footer />
           </div>
         </Router>
