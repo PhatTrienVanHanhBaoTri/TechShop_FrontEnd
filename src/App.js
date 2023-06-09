@@ -16,7 +16,6 @@ import "./App.css";
 import "./_app.scss";
 
 function App() {
-  console.log("app");
   return (
     <div className="wrapper">
       <div className="main-content">
