@@ -14,16 +14,57 @@ const UserApi = {
 
     return axiosClient
       .post(url, data)
-
       .then((response) => {
         cookiesService.setCookies("user", JSON.stringify(response), 98);
         return response;
       })
       .catch((error) => {
-        //console.log(error);
         return Promise.reject(error);
       });
   },
+    register: async (params) => {
+    let { email, fullname, pswd, DOB, phone, address, gender } = params;
+    const url = `${UrlConstant.REGISTER}`;
+    const data = JSON.stringify({ email, fullname, pswd, DOB, phone, address, gender });
+
+    return axiosClient
+      .post(url, data)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+    forgotPassword: async (params) => {
+    const url = `${UrlConstant.FORGOT_PASSWORD} + ${params}`;
+    return axiosClient
+      .post(url)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+      resetPassword: async (params) => {
+    let { newPassword, OTP, userEmail } = params;
+    const url = `${UrlConstant.RESET_PASSWORD}`;
+    const data = JSON.stringify({ newPassword, OTP, userEmail });
+
+    return axiosClient
+      .post(url, data)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+
   getShippingInfo: async () => {
     const url = `${UrlConstant.GET_USER_SHIPPING_INFO}`;
     return axiosClientAuthen

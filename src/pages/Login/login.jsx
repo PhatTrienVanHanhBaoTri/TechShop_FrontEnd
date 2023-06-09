@@ -43,7 +43,7 @@ function Login() {
   }, [isLoggedIn, history, location, dispatch]);
 
   return (
-    <div className="row">
+    <div className="row w-100">
       <div className="col-sm-6 login-background"></div>
       <div className="col-sm-6 login-wrapper">
         <div className="login-wrapper-content">
@@ -51,6 +51,7 @@ function Login() {
           <form>
             <p>Email</p>
             <input
+              className="mb-4"
               name="email"
               onChange={handleChangeInputText}
               required
@@ -59,19 +60,28 @@ function Login() {
             <p>Password</p>
             <input
               name="pswd"
+              className="mb-3"
               onChange={handleChangeInputText}
               required
               type="password"
               placeholder="Enter your password"
             />
+
+            <div className="mb-2" style={{ color: "red" }}>
+              {error}
+            </div>
             <div className="text-center">
-              <button onClick={handleSubmit} className="btn mb-3">
+              <button onClick={handleSubmit} className="btn mb-2">
                 Get Started
               </button>
-              <Link to="/register">Create account</Link>
+              <p className="my-2" style={{ fontSize: "0.85rem" }}>
+                Do not have account?
+              </p>
+              <button className="btn-secondary px-2 py-1">
+                <Link to="/register">Register</Link>
+              </button>
             </div>
           </form>
-          <div>{error}</div>
         </div>
       </div>
     </div>
