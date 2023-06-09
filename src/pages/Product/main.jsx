@@ -12,7 +12,6 @@ import ProductGridView from "./ProductGridView/productGridView";
 import "./_product.scss";
 
 function Product() {
-  //console.log("main");
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
@@ -25,6 +24,7 @@ function Product() {
       dispatch(removeLastBreadcrumb());
     };
   }, [dispatch]);
+
   return (
     <div className="wrapper-dashboard product-area">
       <div className="child-banner product-banner">
