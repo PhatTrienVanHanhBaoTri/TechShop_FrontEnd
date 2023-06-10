@@ -20,15 +20,19 @@ export const initialStateUseLoggedIn = () => {
   return result === undefined || result === null ? false : true;
 };
 
+export const persist = () => {
+  let result = JSON.parse(window.localStorage.getItem("persist-key"));
+  return result === null ? {} : result;
+};
+
 const user = createSlice({
   name: "user",
   initialState: {
-    data: { isLoggedIn: initialStateUseLoggedIn(), error: "", info: {} },
+    data: { isLoggedIn: initialStateUseLoggedIn(), error: "", info: persist() },
   },
   reducers: {
     updateLoggedInStatus: (state, action) => {
       state.data.isLoggedIn = action.payload.isLoggedIn;
-
     },
   },
   extraReducers: {
@@ -39,6 +43,10 @@ const user = createSlice({
       state.data.isLoggedIn = true;
       state.data.error = "";
       state.data.info = action.payload;
+      window.localStorage.setItem(
+        "persist-key",
+        JSON.stringify(action.payload)
+      );
     },
     [login.rejected]: (state) => {
       console.log("login failed");

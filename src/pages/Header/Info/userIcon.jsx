@@ -13,7 +13,8 @@ function UserIcon() {
     cookiesService.removeCookies("user");
     window.location.href = "/home";
     dispatch(updateLoggedInStatus({ isLoggedIn: false }));
-  }
+    window.localStorage.setItem("persist-key", null);
+  };
   const renderUserModal = () => {
     return (
       <div className="dropdown">

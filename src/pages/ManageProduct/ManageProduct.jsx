@@ -7,12 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useState, useEffect } from "react";
 import Breadcrumb from "components/common/Breadcrumb/breadcrumb";
 import { Route } from "react-router-dom";
-import DoneIcon from "../../assets/icons/done.svg";
-import CancelIcon from "../../assets/icons/cancel.svg";
-import RefundedIcon from "../../assets/icons/refunded.svg";
 import "./Style/style.css";
-import ProductApi from "api/productApi";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { BsSearch } from "react-icons/bs";
+import { getAllProducts } from "utilities/slices/productSlice";
 
 export default function ManageProduct() {
   const dispatch = useDispatch();
@@ -21,18 +19,20 @@ export default function ManageProduct() {
   let [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState([]);
-  const [allProducts, setAllProducts] = useState([]);
+  const allProducts = useSelector((state) => state.product.data);
+  const [searchProducts, setSearchProducts] = useState([]);
 
   useEffect(() => {
-    async function fetchProduct() {
-      let response = [];
-      response = await ProductApi.getAllProducts({});
-      setProducts(response);
-      setAllProducts(response);
+    setProducts(allProducts);
+  }, [allProducts]);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      await dispatch(getAllProducts());
     }
 
-    fetchProduct();
-  }, []);
+    fetchProducts();
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(
@@ -47,16 +47,21 @@ export default function ManageProduct() {
   }, [dispatch]);
 
   useEffect(() => {
-    setPagination(calculateRange(products, 5));
-    setProducts(sliceData(products, page, 5));
-  }, []);
+    setPagination(calculateRange(allProducts, 5));
+    setProducts(sliceData(allProducts, page, 5));
+  }, [allProducts]);
 
   // Search
-  const __handleSearch = (event) => {
-    setSearch(event.target.value);
-    if (event.target.value !== "") {
+  const handleEnterKey = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  const handleSearch = () => {
+    if (search !== "") {
       products = allProducts;
-      let search_results = products.filter(
+      let search_results = allProducts.filter(
         (item) =>
           item.productName
             .trim()
@@ -67,10 +72,15 @@ export default function ManageProduct() {
             .toLowerCase()
             .includes(search.trim().toLowerCase())
       );
-      setProducts(search_results);
+      setPagination(calculateRange(search_results, 5));
+      setProducts(sliceData(search_results, page, 5));
+      setSearchProducts(search_results);
     } else {
       products = allProducts;
-      __handleChangePage(1);
+      setSearchProducts([]);
+      setPagination(calculateRange(allProducts, 5));
+      setProducts(sliceData(allProducts, page, 5));
+      __handleChangePage(allProducts, 1);
     }
   };
 
@@ -88,9 +98,9 @@ export default function ManageProduct() {
   };
 
   // Change Page
-  const __handleChangePage = (new_page) => {
+  const __handleChangePage = (data, new_page) => {
     setPage(new_page);
-    setProducts(sliceData(products, new_page, 5));
+    setProducts(sliceData(data, new_page, 5));
   };
 
   return (
@@ -110,9 +120,17 @@ export default function ManageProduct() {
                   <input
                     type="text"
                     placeholder="Search.."
-                    className="dashboard-content-input"
-                    onChange={__handleSearch}
+                    className="dashboard-content-input position-relative pr-5"
+                    onChange={({ target }) => setSearch(target.value)}
                     value={search}
+                    onKeyDown={handleEnterKey}
+                  />
+                  <BsSearch
+                    type="button"
+                    size={18}
+                    className="icon-search"
+                    style={{}}
+                    onClick={handleSearch}
                   />
                 </div>
               </div>
@@ -258,7 +276,11 @@ export default function ManageProduct() {
                       className={
                         item === page ? "active-pagination" : "pagination"
                       }
-                      onClick={() => __handleChangePage(item)}
+                      onClick={() =>
+                        search !== ""
+                          ? __handleChangePage(searchProducts, item)
+                          : __handleChangePage(allProducts, item)
+                      }
                     >
                       {item}
                     </span>
