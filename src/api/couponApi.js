@@ -19,6 +19,16 @@ const CouponApi = {
       .catch(err => {
         return null;
       });
+  },
+  checkUsedCoupon: async (userID, couponID) => {
+    const url = `${UrlConstant.CHECK_USED_COUPON(userID, couponID)}`;
+    //console.log('call api get category')
+    return await axiosClient
+      .get(url)
+      .then((res) => res)
+      .catch(err => {
+        return null;
+      });
   }
 };
 export default CouponApi;

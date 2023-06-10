@@ -29,6 +29,9 @@ export const GET_ALL_COUPONS = "api/v1/coupons"
 
 export const GET_COUPON_BY_ID = "/coupons"
 
+export const CHECK_USED_COUPON = (userID, couponID) => `api/v1/invoice/${couponID}/user/${userID}`
+
+
 // USER
 export const LOGIN = "api/v1/auth/login"
 export const REGISTER = "api/v1/auth/register"

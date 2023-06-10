@@ -10,7 +10,7 @@ import DetailedOrder from "./DetailedOrder/detailedOrder";
 import { Route } from "react-router-dom";
 import EmptyItem from "components/ShoppingItemsComponents/EmptyItem/emptyItem";
 import { Spinner } from 'reactstrap';
-
+import { cookiesService } from "helpers/cookiesService";
 import OrderApi from 'api/orderApi';
 
 
@@ -35,7 +35,9 @@ function CompletedOrder(props) {
     async function getAllCompletedOrders () {
       setLoading(true);
       let response = [];
-      response = await OrderApi.getAllCompletedOrders();
+      let user = null;
+      user = cookiesService.getCookies("user");
+      response = await OrderApi.getAllCompletedOrders(user.userID);
       setOrders(response);
       setLoading(false);
     };
