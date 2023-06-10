@@ -76,16 +76,9 @@ const UserApi = {
       });
   },
 
-<<<<<<< HEAD
-  getShippingInfo: async () => {
-    const url = `${UrlConstant.GET_USER_SHIPPING_INFO}`;
-    return axiosClientAuthen
-=======
-
   getShippingInfo: async (email) => {
     const url = `${UrlConstant.GET_USER_SHIPPING_INFO}/${email}`;
     return axiosClient
->>>>>>> Beta
       .get(url)
       .then((response) => {
         return response;
