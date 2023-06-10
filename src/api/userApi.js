@@ -71,7 +71,7 @@ const UserApi = {
 
   getShippingInfo: async () => {
     const url = `${UrlConstant.GET_USER_SHIPPING_INFO}`;
-    return axiosClient
+    return axiosClientAuthen
       .get(url)
       .then((response) => {
         return response;
