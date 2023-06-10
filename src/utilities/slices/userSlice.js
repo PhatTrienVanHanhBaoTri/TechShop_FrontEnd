@@ -22,6 +22,7 @@ export const register = createAsyncThunk("user/register", async (params) => {
 
 export const forgotPassword = createAsyncThunk("user/forgot-password", async (params) => {
   const token = await UserApi.forgotPassword(params);
+  console.log(token);
   return token;
 });
 
@@ -38,7 +39,7 @@ const user = createSlice({
   name: "user",
   initialState: {
     data: { 
-      isLoggedIn: initialStateUseLoggedIn(),
+      isLoggedIn: null,
       isSuccess: null,
       error: "",
     },
@@ -65,6 +66,7 @@ const user = createSlice({
     },
     [register.fulfilled]: (state, action) => {
       state.data.isSuccess = true;
+      state.data.error = "";
     },
     [register.rejected]: (state, action) => {
       state.data.isSuccess = false;
@@ -72,6 +74,7 @@ const user = createSlice({
     },
     [forgotPassword.fulfilled]: (state, action) => {
        state.data.isSuccess = true;
+      state.data.error = "";
     },
     [forgotPassword.rejected]: (state, action) => {
       state.data.isSuccess = false;
@@ -79,13 +82,13 @@ const user = createSlice({
     },
     [resetPassword.fulfilled]: (state, action) => {
       state.data.isSuccess = true;
+      
     },
     [resetPassword.rejected]: (state, action) => {
       state.data.isSuccess = false;
       state.data.isSuccessResetPassword = "Your OTP is not valid";
     }
   },
-  serializableCheck: false,
 });
 export default user.reducer;
 export const { updateLoggedInStatus, updateError,updateErrorSendOTP, updateErrorResetPassword } = user.actions;

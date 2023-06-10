@@ -38,8 +38,8 @@ export const ForgotPassword = () => {
               />
             </div>
 
-            <div className="mb-2" style={{ color: "red" }}>
-              {error}
+            <div className="mb-2 mx-auto" style={{ color: "red" }}>
+              <p>{error}</p>
             </div>
             <div className="text-center">
               <button
