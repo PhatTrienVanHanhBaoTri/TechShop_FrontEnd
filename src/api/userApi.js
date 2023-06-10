@@ -26,10 +26,18 @@ const UserApi = {
     const url = `${UrlConstant.GET_USER_BY_EMAIL}/${email}`;
     return axiosClient.get(url);
   },
-    register: async (params) => {
+  register: async (params) => {
     let { email, fullname, pswd, DOB, phone, address, gender } = params;
     const url = `${UrlConstant.REGISTER}`;
-    const data = JSON.stringify({ email, fullname, pswd, DOB, phone, address, gender });
+    const data = JSON.stringify({
+      email,
+      fullname,
+      pswd,
+      DOB,
+      phone,
+      address,
+      gender,
+    });
 
     return axiosClient
       .post(url, data)
@@ -41,7 +49,7 @@ const UserApi = {
       });
   },
 
-    forgotPassword: async (params) => {
+  forgotPassword: async (params) => {
     const url = `${UrlConstant.FORGOT_PASSWORD} + ${params}`;
     return axiosClient
       .post(url)
@@ -53,7 +61,7 @@ const UserApi = {
       });
   },
 
-      resetPassword: async (params) => {
+  resetPassword: async (params) => {
     let { newPassword, OTP, userEmail } = params;
     const url = `${UrlConstant.RESET_PASSWORD}`;
     const data = JSON.stringify({ newPassword, OTP, userEmail });
@@ -68,7 +76,6 @@ const UserApi = {
       });
   },
 
-
   getShippingInfo: async () => {
     const url = `${UrlConstant.GET_USER_SHIPPING_INFO}`;
     return axiosClientAuthen
@@ -81,6 +88,5 @@ const UserApi = {
         return Promise.reject(error);
       });
   },
-  
 };
 export default UserApi;
