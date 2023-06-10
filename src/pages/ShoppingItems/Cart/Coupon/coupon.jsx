@@ -4,6 +4,7 @@ import CouponApi from "api/couponApi";
 import { applyCoupon } from "utilities/slices/cartSlice";
 import { useDispatch } from "react-redux";
 import handlePrice from "helpers/formatPrice";
+import { cookiesService } from "helpers/cookiesService";
 
 function Coupon() {
   const [coupon, setCoupon] = useState(null);
@@ -28,13 +29,19 @@ function Coupon() {
     // TODO: solve when status code is 404
     let response = await CouponApi.getAllCoupons();
     let valid = false;
+    let user = null;
+    user = cookiesService.getCookies("user");
 
     for (let i = 0; i < response.length; i++) {
       const coupon = response[i];
-
+      
       if (coupon.couponCode === input) {
-        valid = true;
-        setCoupon(coupon);
+        const used = await CouponApi.checkUsedCoupon(user.userID, coupon.id);
+        console.log(used);
+        if (!used) {
+          valid = true;
+          setCoupon(coupon);
+        }
       }
     }
 

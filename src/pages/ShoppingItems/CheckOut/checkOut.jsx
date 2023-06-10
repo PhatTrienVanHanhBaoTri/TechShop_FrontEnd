@@ -42,7 +42,7 @@ function CheckOut(props) {
 
   const placeOrder = (shippingInfo) => {
     if (currentCoupon) {
-      shippingInfo.couponId = currentCoupon.id;
+      shippingInfo.couponID = currentCoupon.id;
     }
     let user = null;
     user = cookiesService.getCookies("user");
@@ -73,7 +73,7 @@ function CheckOut(props) {
       statusInvoice: null,
       shippingDate: null,
       invoiceDate: null,
-      couponID: shippingInfo.couponId
+      couponID: shippingInfo.couponID ? shippingInfo.couponID : 0
     };
 
     const placeOrder = async (data) => {  
