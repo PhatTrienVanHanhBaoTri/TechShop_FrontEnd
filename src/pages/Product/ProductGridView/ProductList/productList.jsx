@@ -5,7 +5,7 @@ import { Col, Row } from "reactstrap";
 import ProductApi from "api/productApi";
 import ProductCard from "pages/Product/common/ProductCard/productCard";
 import ProductModal from "components/common/ProductModal/productModal";
-import { Spinner } from 'reactstrap';
+import { Spinner } from "reactstrap";
 
 function ProductList() {
   const [products, setProducts] = useState([]);
@@ -52,18 +52,20 @@ function ProductList() {
   }, [params, filter, location]);
 
   const renderProductCards = (products) => {
-    if(loading) {
-      return <Col xs="12" sm="12" md="12" lg="12"className='text-center'>
-        <Spinner color="primary" />
-      </Col>
-    } else 
-    return products.length !== 0
-      ? products.map((product, index) => (
-          <Col key={index} xs="12" sm="6" md="4" lg="4">
-            <ProductCard product={product} />
-          </Col>
-        ))
-      : "";
+    if (loading) {
+      return (
+        <Col xs="12" sm="12" md="12" lg="12" className="text-center">
+          <Spinner color="primary" />
+        </Col>
+      );
+    } else
+      return products.length !== 0
+        ? products.map((product, index) => (
+            <Col key={index} xs="12" sm="6" md="4" lg="4">
+              <ProductCard product={product} />
+            </Col>
+          ))
+        : "";
   };
   return (
     <React.Fragment>

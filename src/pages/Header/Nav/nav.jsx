@@ -87,13 +87,13 @@ function Nav(props) {
           <NavLink
             className="text-nowrap"
             activeClassName="active"
-            to="/manageProducts"
+            to="/ManageProducts"
           >
             Manage Products
           </NavLink>
         </li>
       )}
-      <button onClick={() => console.log(state)}>console</button>
+      {/* <button onClick={() => console.log(state)}>console</button> */}
     </ul>
   );
 }

@@ -8,13 +8,18 @@ import {
   addNewBreadcrumb,
   removeLastBreadcrumb,
 } from "utilities/slices/breadcrumbSlice";
-import SingleProInfo from "./SingleProInfo/singleProInfo";
-import SingleProTab from "./SingleProTab/singleProTab";
+import SingleProInfo from "./SingleProInfo";
+import SingleProTab from "../../Product/ProductDetail/SingleProTab/singleProTab";
 import ReviewApi from "api/reviewApi";
 
-function ProductDetail() {
+function ManageProductDetail() {
   const dispatch = useDispatch();
   const { id } = useParams();
+  // const params = useParams();
+
+  // useEffect(() => {
+  //   console.log(params);
+  // });
 
   const [product, setProduct] = useState(null);
   const [relatedCategoryProducts, setRelatedCategoryProducts] = useState(null);
@@ -26,7 +31,7 @@ function ProductDetail() {
       let response = await ProductApi.getDetailedProduct(id);
       dispatch(
         addNewBreadcrumb({
-          name: response.productName,
+          name: response.productName + " - DETAIL",
           slug: "",
         })
       );
@@ -57,23 +62,6 @@ function ProductDetail() {
     fetchRelatedCategoryProduct();
     fetchFirstReviews();
 
-    // Promise.all([
-    //   fetchProduct(),
-    //   fetchRelatedCategoryProduct(),
-    //   fetchRelatedBrandProduct(),
-    // ]).then(function ([
-    //   product,
-    //   relatedCategoryProducts,
-    //   relatedBrandProducts,
-    // ]) {
-    //   setLoading(false);
-    //   setAllProductInfo({
-    //     product,
-    //     relatedCategoryProducts,
-    //     relatedBrandProducts,
-    //   });
-    // });
-
     return () => {
       dispatch(removeLastBreadcrumb());
     };
@@ -103,6 +91,4 @@ function ProductDetail() {
   return <React.Fragment>{renderProductDetail()}</React.Fragment>;
 }
 
-//ProductDetail.propTypes = {};
-
-export default ProductDetail;
+export default ManageProductDetail;
