@@ -153,3 +153,11 @@ td span {
   font-weight: 700;
   border-color: #ffffff;
 }
+
+.icon-search {
+  position: absolute;
+  right: 10px;
+  &:hover {
+    color: #7e7c7a;
+  }
+}
