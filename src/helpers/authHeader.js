@@ -1,10 +1,10 @@
 import { cookiesService } from "helpers/cookiesService";
 
 export function authHeader() {
-  let token = cookiesService.getCookies("user");
+  let user = cookiesService.getCookies("user");
 
-  if (token) {
-    return `Bearer ${token}`;
+  if (user) {
+    return `Bearer ${user.jwtToken}`;
   } else {
     return {};
   }

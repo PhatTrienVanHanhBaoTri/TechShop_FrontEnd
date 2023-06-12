@@ -3,6 +3,8 @@ import AddressInfo from "components/ShoppingItemsComponents/AddressInfo/addressI
 import React, { useEffect, useState } from "react";
 import AnotherAddressForm from "./anotherAddressForm";
 import "./_billingDetails.scss";
+import { cookiesService } from "helpers/cookiesService";
+
 
 function BillingDetails(props) {
   const { updateShippingInfo } = props;
@@ -23,7 +25,7 @@ function BillingDetails(props) {
       setStateNewAddress("add");
       setContent("");
     } else {
-      updateShippingInfo(null);
+      updateShippingInfo(defaultInfo);
       setStateNewAddress("empty");
       setConfirmAddress(true);
       setContent(" Add new one");
@@ -32,10 +34,13 @@ function BillingDetails(props) {
 
   useEffect(() => {
     // call api to get
+    let user = null;
+    user = cookiesService.getCookies("user");
     const fetchShippingInfo = async () => {
-      return UserApi.getShippingInfo()
+      return UserApi.getShippingInfo(user.email)
         .then((res) => {
           setDefaultInfo(res);
+		  updateShippingInfo(res);
         })
         .catch((err) => console.log(err));
     };

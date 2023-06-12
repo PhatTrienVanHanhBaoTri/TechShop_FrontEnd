@@ -68,9 +68,8 @@ const UserApi = {
       });
   },
 
-
-  getShippingInfo: async () => {
-    const url = `${UrlConstant.GET_USER_SHIPPING_INFO}`;
+  getShippingInfo: async (email) => {
+    const url = `${UrlConstant.GET_USER_SHIPPING_INFO}/${email}`;
     return axiosClient
       .get(url)
       .then((response) => {
@@ -81,6 +80,5 @@ const UserApi = {
         return Promise.reject(error);
       });
   },
-  
 };
 export default UserApi;

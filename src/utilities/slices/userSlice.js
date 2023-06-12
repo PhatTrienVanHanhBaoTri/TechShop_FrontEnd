@@ -34,6 +34,11 @@ export const initialStateUseLoggedIn = () => {
   return result === undefined || result === null ? false : true;
 };
 
+export const persist = () => {
+  let result = JSON.parse(window.localStorage.getItem("persist-key"));
+  return result === null ? {} : result;
+};
+
 const user = createSlice({
   name: "user",
   initialState: {
@@ -63,6 +68,11 @@ const user = createSlice({
     [login.fulfilled]: (state, action) => {
       state.data.isLoggedIn = true;
       state.data.error = "";
+      state.data.info = action.payload;
+      window.localStorage.setItem(
+        "persist-key",
+        JSON.stringify(action.payload)
+      );
     },
     [login.rejected]: (state, action) => {
       state.data.error = "Username or password is incorrect";

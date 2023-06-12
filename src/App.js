@@ -47,7 +47,7 @@ function App() {
                 {/* <News />
                 </Route> */}
 
-                <Route path={["/manageProducts", "/manageProducts/:slug"]}>
+                <Route path={["/ManageProducts", "/ManageProducts/:id"]}>
                   <ManageProduct />
                 </Route>
 
