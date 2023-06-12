@@ -25,6 +25,8 @@ export const GET_ALL_REVIEWS_BY_PRODUCTID = "/api/v1/review"
 export const ADD_REVIEW = "/api/v1/review"
 
 // COUPON
+export const GET_ALL_COUPONS = "api/v1/coupons"
+
 export const GET_COUPON_BY_ID = "/coupons"
 
 // USER
@@ -44,3 +46,5 @@ export const GET_DETAILED_ORDER = "/api/v1/invoice"
 
 // TOKEN
 export const REFRESH_TOKEN = "/refresh"
+
+export const GET_USER_BY_EMAIL = "/api/v1/user"

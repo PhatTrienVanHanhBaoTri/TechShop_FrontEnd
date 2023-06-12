@@ -1,14 +1,20 @@
 import React, { useState, useRef } from "react";
 import "./_coupon.scss";
 import CouponApi from "api/couponApi";
+import { applyCoupon } from "utilities/slices/cartSlice";
+import { useDispatch } from "react-redux";
+import handlePrice from "helpers/formatPrice";
+
 function Coupon() {
-  const [coupon, setCoupon] = useState("");
+  const [coupon, setCoupon] = useState(null);
+  const [couponCode, setCouponCode] = useState("");
   const [couponStatus, setCouponStatus] = useState(null);
   const typingTimeoutRef = useRef(null);
+  const dispatch = useDispatch();
 
   const handleChangeCoupon = (e) => {
     const value = e.target.value;
-    setCoupon(value);
+    setCouponCode(value);
 
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current);
@@ -18,34 +24,71 @@ function Coupon() {
     }, 300);
   };
 
-  const submitCoupon = async (id) => {
+  const submitCoupon = async (input) => {
     // TODO: solve when status code is 404
-    let response = await CouponApi.getCouponById(id);
-    if (response !== null) setCouponStatus("available");
-    else setCouponStatus("unavailable");
+    let response = await CouponApi.getAllCoupons();
+    let valid = false;
+
+    for (let i = 0; i < response.length; i++) {
+      const coupon = response[i];
+
+      if (coupon.couponCode === input) {
+        valid = true;
+        setCoupon(coupon);
+      }
+    }
+
+    if (!valid) {
+      if (input !== "") {
+        setCouponStatus("unavailable");
+      } else {
+        setCouponStatus(null);
+      }
+    } else {
+        setCouponStatus("available");
+    }
   };
 
   const renderCouponStatus = (status) => {
     return status !== null ? (
-      <span className={`alert ${status}`}>Your coupon is {status}</span>
+      <>
+        {coupon ? (
+          <span className={`alert ${status}`}>Your coupon is {status} - {coupon?.couponType === "PERCENT" ? coupon?.value + "%" : handlePrice(coupon?.value) + " đ"}</span>
+        ) : (
+          <span className={`alert ${status}`}>Your coupon is {status}</span>
+        )}
+      </>
     ) : (
       ""
     );
   };
 
+  const handleApplyCoupon = () => {
+    // console.log(coupon);
+    dispatch(applyCoupon(coupon));
+    setCoupon(null);
+    setCouponCode("");
+    setCouponStatus(null);
+  }
+
   return (
-    <div className="coupon">
+    <div className="coupon h-100">
       <div>
         <h4>Coupon Discount</h4>
       </div>
       <p>Enter your coupon code if you have one!</p>
-      <div>
+      <div className="d-flex flex-column">
         <input
           placeholder="Enter your code here"
-          value={coupon}
+          value={couponCode}
           onChange={handleChangeCoupon}
         />
         {renderCouponStatus(couponStatus)}
+      </div>
+      <div>
+        <button onClick={handleApplyCoupon} disabled={couponStatus === "available" ? false : true} type="button" className="apply-coupon-btn border-0 mt-2 p-2 text-nowrap">
+          Apply coupon
+        </button>
       </div>
     </div>
   );

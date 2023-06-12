@@ -60,6 +60,7 @@ const user = createSlice({
     [login.fulfilled]: (state, action) => {
       state.data.isLoggedIn = true;
       state.data.error = "";
+      state.data.info = action.payload;
     },
     [login.rejected]: (state, action) => {
       state.data.error = "Username or password is incorrect";

@@ -2,7 +2,7 @@ import HeaderSection from "components/common/HeaderSection/headerSection";
 import React from "react";
 import "./_specsTab.scss";
 function SpecsTab(props) {
-  const { specs, generalInfo } = props;
+  const { specName1, spec1, specName2, spec2, specName3, spec3, specName4, spec4, generalInfo } = props;
 
   const renderGeneralInfo = (generalInfo) => {
     return (
@@ -19,29 +19,24 @@ function SpecsTab(props) {
     );
   };
 
-  const renderSpecsInfo = (specsInfo) => {
-    if (specsInfo !== undefined) {
-      var specifications = specsInfo.replace(/'/g, '"');
-      specifications = JSON.parse(specifications);
-      return specifications.map((item, index) => {
-        if (index % 2 === 0) {
-          return (
-            <div className="row specs" key={index}>
-              <div className="col-4 specs-tag">{item.tag}</div>
-              <div className="col-8 specs-content">{item.content}</div>
-            </div>
-          );
-        } else {
-          return (
-            <div className="row specs specs-deco" key={index}>
-              <div className="col-4 specs-tag">{item.tag}</div>
-              <div className="col-8 specs-content">{item.content}</div>
-            </div>
-          );
-        }
-      });
-    }
-    return "";
+  const renderSpecsInfo = (specName1, spec1, specName2, spec2, specName3, spec3, specName4, spec4) => {
+    const specifications = [
+      { [specName1]: spec1 },
+      { [specName2]: spec2 },
+      { [specName3]: spec3 },
+      { [specName4]: spec4 }
+    ];
+  
+    return specifications.map((spec, index) => {
+      const specName = Object.keys(spec)[0];
+      const specValue = Object.values(spec)[0];
+      return (
+        <div className={`row specs ${index % 2 === 1 ? 'specs-deco' : ''}`} key={index}>
+          <div className="col-4 specs-tag">{specName}</div>
+          <div className="col-8 specs-content">{specValue}</div>
+        </div>
+      );
+    });
   };
 
   return (
@@ -52,7 +47,7 @@ function SpecsTab(props) {
       </div>
       <div className="col-lg-7">
         <HeaderSection content="Product Specification" />
-        {renderSpecsInfo(specs)}
+        {renderSpecsInfo(specName1, spec1, specName2, spec2, specName3, spec3, specName4, spec4)}
       </div>
     </div>
   );

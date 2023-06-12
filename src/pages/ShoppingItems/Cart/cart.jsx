@@ -9,10 +9,12 @@ import GeneralOrder from "../common/GeneralOrder/generalOrder";
 import CartItem from "./CartItem/cartItem";
 import Coupon from "./Coupon/coupon";
 import { useHistory } from "react-router-dom";
+import { applyCoupon } from "utilities/slices/cartSlice";
 
 function Cart() {
   //console.log("cart");
   const productsInCart = useSelector((state) => state.cart.products);
+  const currentCoupon = useSelector((state) => state.cart.currentCoupon);
   
   const history = useHistory();
   const dispatch = useDispatch();
@@ -32,6 +34,10 @@ function Cart() {
   const placeOrder = () => {
     history.push("/check-out");
   };
+
+  const handleRemoveCoupon = () => {
+    dispatch(applyCoupon(null));
+  }
 
   const renderCartItems = (items) => {
     return items.length !== 0 ? (
@@ -69,13 +75,16 @@ function Cart() {
 
   const renderOrderComponent = (productsInCart) => {
     return productsInCart.length !== 0 ? (
-      <div className="table-wrapper">
+      <div className="table-wrapper h-100">
         <div>
           <h4>Payment Details</h4>
         </div>
         <GeneralOrder />
+        {currentCoupon && (
+          <button className="btn-remove-coupon text-nowrap my-2" onClick={handleRemoveCoupon}>Remove coupon</button>
+        )}
         <div className="btn-pay">
-          <button onClick={placeOrder}>Place order</button>
+          <button className="text-nowrap p-2" onClick={placeOrder}>Place order</button>
         </div>
       </div>
     ) : null;

@@ -22,6 +22,10 @@ const UserApi = {
         return Promise.reject(error);
       });
   },
+  getUserDetail: async (email) => {
+    const url = `${UrlConstant.GET_USER_BY_EMAIL}/${email}`;
+    return axiosClient.get(url);
+  },
     register: async (params) => {
     let { email, fullname, pswd, dob, phone, address, gender} = params;
     const url = `${UrlConstant.REGISTER}`;
@@ -67,7 +71,7 @@ const UserApi = {
 
   getShippingInfo: async () => {
     const url = `${UrlConstant.GET_USER_SHIPPING_INFO}`;
-    return axiosClientAuthen
+    return axiosClient
       .get(url)
       .then((response) => {
         return response;
