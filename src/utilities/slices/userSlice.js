@@ -22,7 +22,6 @@ export const register = createAsyncThunk("user/register", async (params) => {
 
 export const forgotPassword = createAsyncThunk("user/forgot-password", async (params) => {
   const token = await UserApi.forgotPassword(params);
-  console.log(token);
   return token;
 });
 
@@ -39,7 +38,8 @@ const user = createSlice({
   name: "user",
   initialState: {
     data: { 
-      isLoggedIn: null,
+      roleID: 2,
+      isLoggedIn: initialStateUseLoggedIn(),
       isSuccess: null,
       error: "",
     },
@@ -51,6 +51,9 @@ const user = createSlice({
       updateError: (state, action) => {
       state.data.error = action.payload.error;
     },
+    updateStatus: (state, action) => {
+      state.data.isSuccess = action.payload.isSuccess;
+    }
    
   },
   extraReducers: {
@@ -60,7 +63,6 @@ const user = createSlice({
     [login.fulfilled]: (state, action) => {
       state.data.isLoggedIn = true;
       state.data.error = "";
-      state.data.info = action.payload;
     },
     [login.rejected]: (state, action) => {
       state.data.error = "Username or password is incorrect";
@@ -92,4 +94,4 @@ const user = createSlice({
   },
 });
 export default user.reducer;
-export const { updateLoggedInStatus, updateError,updateErrorSendOTP, updateErrorResetPassword } = user.actions;
+export const { updateLoggedInStatus, updateError,updateErrorSendOTP, updateErrorResetPassword, updateStatus } = user.actions;

@@ -82,7 +82,7 @@ function Nav(props) {
         </NavLink>
       </li>
 
-      {state.user.data.info.roleID === 1 && (
+      {state.user.data.roleID === 1 && (
         <li className="nav-item pt-md-3 m-3">
           <NavLink
             className="text-nowrap"

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { forgotPassword, updateError } from "utilities/slices/userSlice";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import {
+  forgotPassword,
+  updateError,
+  updateStatus,
+} from "utilities/slices/userSlice";
 import "./_forgotPassword.scss";
 export const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -12,13 +15,21 @@ export const ForgotPassword = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (isSuccess) history.push("/reset-password");
+    dispatch(updateError({ error: "" }));
+    console.log(isSuccess);
+    if (isSuccess) {
+      dispatch(updateStatus({ isSuccess: false }));
+      history.push("/reset-password");
+    }
   }, [isSuccess, history, dispatch]);
 
   const handleSubmit = async (e) => {
     dispatch(updateError({ error: "" }));
     e.preventDefault();
-    await dispatch(forgotPassword(email));
+    async function submitToSendOTP() {
+      await dispatch(forgotPassword(email));
+    }
+    submitToSendOTP();
   };
   return (
     <div className="row w-100">

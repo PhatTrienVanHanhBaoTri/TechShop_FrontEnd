@@ -2,6 +2,7 @@ import { cookiesService } from "helpers/cookiesService";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, Link } from "react-router-dom";
+import { Spinner } from "reactstrap";
 import {
   login,
   updateLoggedInStatus,
@@ -12,6 +13,7 @@ function Login() {
   const location = useLocation();
   const history = useHistory();
   const [info, setInfo] = useState({});
+  const [isloading, setLoading] = useState(false);
   const { isLoggedIn, error } = useSelector((state) => state.user.data);
   const dispatch = useDispatch();
 
@@ -23,9 +25,11 @@ function Login() {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
     async function submitToLogin() {
       await dispatch(login(info));
+      setLoading(false);
     }
     submitToLogin();
   };
@@ -51,7 +55,12 @@ function Login() {
       <div className="col-sm-6 login-background"></div>
       <div className="col-sm-6 login-wrapper">
         <div className="login-wrapper-content">
-          <div className="login-title mb-4">Welcome to TechShop</div>
+          {isloading && (
+            <div className="text-center">
+              <Spinner color="primary" />
+            </div>
+          )}
+          ;<div className="login-title mb-4">Welcome to TechShop</div>
           <form>
             <p>Email</p>
             <input

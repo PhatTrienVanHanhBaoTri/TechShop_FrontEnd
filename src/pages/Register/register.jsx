@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { register, updateError } from "utilities/slices/userSlice";
+import {
+  register,
+  updateError,
+  updateStatus,
+} from "utilities/slices/userSlice";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import "./_register.scss";
@@ -27,7 +31,10 @@ export const Register = () => {
   };
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (isSuccess) history.push("/login");
+    if (isSuccess) {
+      dispatch(updateStatus({ isSuccess: false }));
+      history.push("/login");
+    }
   }, [isSuccess, history, dispatch]);
   return (
     <div className="row w-100">
