@@ -8,13 +8,17 @@ import React, { useState, useEffect } from "react";
 import Breadcrumb from "components/common/Breadcrumb/breadcrumb";
 import { Route } from "react-router-dom";
 import "./Style/style.css";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { getAllProducts } from "utilities/slices/productSlice";
 import ManageProductEdit from "./Edit/ManageProductEdit";
 import ManageProductDetail from "./Detail/ManageProductDetail";
+import handlePrice from "helpers/formatPrice";
+import { Button, Modal, ModalHeader } from "react-bootstrap";
+import ManageProductAdd from "./Add/ManageProductAdd";
+import ProductApi from "api/productApi";
 
-export default function ManageProduct() {
+export default function ManageProduct({ authorized }) {
   const dispatch = useDispatch();
 
   const [search, setSearch] = useState("");
@@ -23,8 +27,10 @@ export default function ManageProduct() {
   const [pagination, setPagination] = useState([]);
   const allProducts = useSelector((state) => state.product.data);
   const [searchProducts, setSearchProducts] = useState([]);
+  const [currentID, setCurrentID] = useState(-1);
 
-  const state = useSelector((state) => state);
+  const [show, setShow] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     setProducts(allProducts);
@@ -53,6 +59,7 @@ export default function ManageProduct() {
   useEffect(() => {
     setPagination(calculateRange(allProducts, 5));
     setProducts(sliceData(allProducts, page, 5));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allProducts]);
 
   // Search
@@ -108,6 +115,20 @@ export default function ManageProduct() {
     setProducts(sliceData(data, new_page, 5));
   };
 
+  const deleteProduct = async (id) => {
+    return ProductApi.deleteProduct(id)
+      .then((res) => {
+        dispatch(getAllProducts());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  if (!authorized) {
+    return <Redirect to="/home" />;
+  }
+
   return (
     <div className="wrapper-dashboard product-area">
       <div className="child-banner product-banner">
@@ -121,7 +142,7 @@ export default function ManageProduct() {
             <div className="dashboard-content">
               <div className="dashboard-content-container">
                 <div className="dashboard-content-header">
-                  <h2>Products List</h2>
+                  <h3 className="font-weight-bold">Products List</h3>
                   <div className="dashboard-content-search">
                     <input
                       type="text"
@@ -130,6 +151,7 @@ export default function ManageProduct() {
                       onChange={({ target }) => setSearch(target.value)}
                       value={search}
                       onKeyDown={handleEnterKey}
+                      style={{ fontSize: "15px" }}
                     />
                     <BsSearch
                       type="button"
@@ -141,14 +163,40 @@ export default function ManageProduct() {
                   </div>
                 </div>
 
+                <div className="d-flex justify-content-end">
+                  <Button onClick={() => history.push("/ManageProducts/add")}>
+                    <i className="fa fa-plus mr-2"></i>Add a product
+                  </Button>
+                </div>
+
                 <table className="d-flex flex-column">
                   <thead>
                     <tr className="d-flex flex-row">
-                      <th style={{ flex: 1, display: "flex" }}>ID</th>
-                      <th style={{ flex: 9, display: "flex" }}>NAME</th>
-                      <th style={{ flex: 3, display: "flex" }}>CATEGORY</th>
-                      <th style={{ flex: 3, display: "flex" }}>BRAND</th>
-                      <th style={{ flex: 3, display: "flex" }}>PRICE</th>
+                      <th
+                        style={{ flex: 1, display: "flex", fontSize: "15px" }}
+                      >
+                        ID
+                      </th>
+                      <th
+                        style={{ flex: 9, display: "flex", fontSize: "15px" }}
+                      >
+                        NAME
+                      </th>
+                      <th
+                        style={{ flex: 3, display: "flex", fontSize: "15px" }}
+                      >
+                        CATEGORY
+                      </th>
+                      <th
+                        style={{ flex: 3, display: "flex", fontSize: "15px" }}
+                      >
+                        BRAND
+                      </th>
+                      <th
+                        style={{ flex: 3, display: "flex", fontSize: "15px" }}
+                      >
+                        PRICE
+                      </th>
                       <th
                         style={{ flex: 2, display: "flex", padding: "0" }}
                       ></th>
@@ -166,17 +214,19 @@ export default function ManageProduct() {
                       {products.map((product, index) => (
                         <tr key={index} className="d-flex flex-row">
                           <td
+                            className="text-truncate"
                             style={{
                               flex: 1,
                               display: "flex",
                               alignItems: "center",
                             }}
                           >
-                            <span className="text-truncate">
+                            <span style={{ fontSize: "15px" }}>
                               {product.productID}
                             </span>
                           </td>
                           <td
+                            className="text-truncate"
                             style={{
                               flex: 9,
                               display: "flex",
@@ -188,11 +238,12 @@ export default function ManageProduct() {
                               className="dashboard-content-avatar"
                               alt=""
                             />
-                            <span className="text-truncate">
+                            <span style={{ fontSize: "15px" }}>
                               {product.productName}
                             </span>
                           </td>
                           <td
+                            className="text-truncate"
                             style={{
                               flex: 3,
                               display: "flex",
@@ -200,12 +251,13 @@ export default function ManageProduct() {
                             }}
                           >
                             <div>
-                              <span className="text-truncate">
+                              <span style={{ fontSize: "15px" }}>
                                 {product.categoryName}
                               </span>
                             </div>
                           </td>
                           <td
+                            className="text-truncate"
                             style={{
                               flex: 3,
                               display: "flex",
@@ -213,24 +265,26 @@ export default function ManageProduct() {
                             }}
                           >
                             <div>
-                              <span className="text-truncate">
+                              <span style={{ fontSize: "15px" }}>
                                 {product.brandName}
                               </span>
                             </div>
                           </td>
                           <td
+                            className="text-truncate"
                             style={{
                               flex: 3,
                               display: "flex",
                               alignItems: "center",
                             }}
                           >
-                            <span className="text-truncate">
-                              {product.productPrice}
+                            <span style={{ fontSize: "15px" }}>
+                              {handlePrice(product.productPrice)}
                             </span>
                           </td>
 
                           <td
+                            className="text-truncate"
                             style={{
                               flex: 2,
                               display: "flex",
@@ -243,11 +297,20 @@ export default function ManageProduct() {
                             <Link
                               to={`/ManageProducts/${product.productID}/detail`}
                             >
-                              <span style={{ color: "#54b4e8" }}>Details</span>
+                              <span
+                                style={{
+                                  color: "#54b4e8",
+                                  fontSize: "15px",
+                                  fontWeight: "normal",
+                                }}
+                              >
+                                Details
+                              </span>
                             </Link>
                           </td>
 
                           <td
+                            className="text-truncate"
                             style={{
                               flex: 2,
                               display: "flex",
@@ -260,27 +323,79 @@ export default function ManageProduct() {
                             <Link
                               to={`/ManageProducts/${product.productID}/edit`}
                             >
-                              <span style={{ color: "#e8b754" }}>Edit</span>
+                              <span
+                                style={{
+                                  color: "#e8b754",
+                                  fontSize: "15px",
+                                  fontWeight: "normal",
+                                }}
+                              >
+                                Edit
+                              </span>
                             </Link>
                           </td>
 
                           <td
+                            className="text-truncate"
                             style={{
                               flex: 2,
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
                               padding: "0",
-                              fontSize: "13px",
+                              fontSize: "15px",
                             }}
                           >
                             <button
                               className="bg-white border-0 hover:undefined"
-                              style={{ color: "#e85e54", fontWeight: "600" }}
-                              onClick={() => console.log(state)}
+                              style={{
+                                color: "#e85e54",
+                                fontWeight: "normal",
+                              }}
+                              onClick={() => {
+                                setCurrentID(product.productID);
+                                setShow(true);
+                              }}
                             >
                               Delete
                             </button>
+
+                            <Modal
+                              show={show}
+                              onHide={() => setShow(false)}
+                              style={{
+                                height: "16rem",
+                              }}
+                            >
+                              <ModalHeader
+                                className="d-flex justify-content-start align-content-center h3 text-center m-0"
+                                style={{ color: "#dd4242" }}
+                              >
+                                Question?
+                              </ModalHeader>
+                              <ModalHeader className="d-flex justify-content-center align-content-center h4 text-center m-0">
+                                Are you sure you want to delete this product?
+                              </ModalHeader>
+                              <Modal.Footer>
+                                <Button
+                                  variant="secondary"
+                                  onClick={() => setShow(false)}
+                                  className="px-4"
+                                >
+                                  No
+                                </Button>
+                                <Button
+                                  variant="primary"
+                                  onClick={() => {
+                                    deleteProduct(currentID);
+                                    setShow(false);
+                                  }}
+                                  className="px-4"
+                                >
+                                  Sure
+                                </Button>
+                              </Modal.Footer>
+                            </Modal>
                           </td>
                         </tr>
                       ))}
@@ -323,13 +438,9 @@ export default function ManageProduct() {
             <ManageProductEdit />
           </Route>
 
-          {/* <Route path="/products/create/:slug">
-              <ProductCreate />
-            </Route>
-
-            <Route path="/products/edit/:slug">
-              <ProductEdit />
-            </Route> */}
+          <Route exact path="/ManageProducts/add">
+            <ManageProductAdd />
+          </Route>
         </div>
       </div>
     </div>

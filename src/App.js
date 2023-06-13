@@ -17,8 +17,11 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import "./_app.scss";
 import ManageProduct from "pages/ManageProduct/ManageProduct";
+import { useSelector } from "react-redux";
 
 function App() {
+  const state = useSelector((state) => state);
+
   return (
     <div className="wrapper">
       <div className="main-content">
@@ -48,7 +51,11 @@ function App() {
                 </Route> */}
 
                 <Route path={["/ManageProducts", "/ManageProducts/:id"]}>
-                  <ManageProduct />
+                  <ManageProduct
+                    authorized={
+                      state.user.data.info.roleID === 1 ? true : false
+                    }
+                  />
                 </Route>
 
                 <Route path="/login">

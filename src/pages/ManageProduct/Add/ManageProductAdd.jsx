@@ -2,78 +2,77 @@ import ProductApi from "api/productApi";
 import CategoryApi from "api/categoryApi";
 import BrandApi from "api/brandApi";
 import { useEffect, useState, Fragment } from "react";
-import { useDispatch } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { Col, Spinner } from "reactstrap";
 import {
   addNewBreadcrumb,
   removeLastBreadcrumb,
 } from "utilities/slices/breadcrumbSlice";
-import { Button, Form, Modal, ModalHeader } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import "../Style/style.css";
 import { getAllProducts } from "utilities/slices/productSlice";
 
-function ManageProductDetail() {
+function ManageProductAdd() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { id } = useParams();
-  const [product, setProduct] = useState(null);
+  const allProducts = useSelector((state) => state.product.data);
 
   const [categories, setCategories] = useState(null);
   const [brands, setBrands] = useState(null);
 
   //const [images, setImages] = useState("");
   const [productName, setProductName] = useState("");
-  const [brandID, setBrandID] = useState(-1);
-  const [categoryID, setCategoryID] = useState(-1);
+  const [brandID, setBrandID] = useState(0);
+  const [categoryID, setCategoryID] = useState(0);
 
-  const [productPrice, setProductPrice] = useState(-1);
-  const [stock, setStock] = useState(-1);
-  const [warranty, setWarranty] = useState(-1);
+  const [productPrice, setProductPrice] = useState(0);
+  const [stock, setStock] = useState(0);
+  const [warranty, setWarranty] = useState(0);
+  const [purchased, setPurchased] = useState(0);
 
   const [shortDescrip, setShortDescrip] = useState("");
   const [longDescrip, setLongDescrip] = useState("");
+  const [shortTech, setShortTech] = useState("");
+
+  const [specName1, setSpecName1] = useState("");
+  const [specName2, setSpecName2] = useState("");
+  const [specName3, setSpecName3] = useState("");
+  const [specName4, setSpecName4] = useState("");
 
   const [spec1, setSpec1] = useState("");
   const [spec2, setSpec2] = useState("");
   const [spec3, setSpec3] = useState("");
   const [spec4, setSpec4] = useState("");
 
-  const [show, setShow] = useState(false);
+  const createNewProductID = (all) => {
+    let id = -1;
+    all.forEach((item) => {
+      if (id < item.productID) {
+        id = item.productID;
+      }
+    });
+
+    if (id === -1) {
+      id = 0;
+    }
+    return id;
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
-      let response = await ProductApi.getDetailedProduct(id);
       let response_categories = await CategoryApi.getAll();
       let response_brands = await BrandApi.getBrands();
 
       dispatch(
         addNewBreadcrumb({
-          name: response.productName + " - EDIT",
-          slug: "/" + response.categorySlug,
+          name: "ADD A PRODUCT",
+          slug: "/add",
         })
       );
 
-      setProduct(response);
-
       setCategories(response_categories);
       setBrands(response_brands);
-
-      setProductName(response.productName);
-      setBrandID(response.brandID);
-      setCategoryID(response.categoryID);
-
-      setProductPrice(response.productPrice);
-      setStock(response.stock);
-      setWarranty(response.warranty);
-
-      setShortDescrip(response.shortDescrip);
-      setLongDescrip(response.longDescrip);
-
-      setSpec1(response.spec1);
-      setSpec2(response.spec2);
-      setSpec3(response.spec3);
-      setSpec4(response.spec4);
     };
 
     fetchProduct();
@@ -81,10 +80,10 @@ function ManageProductDetail() {
     return () => {
       dispatch(removeLastBreadcrumb());
     };
-  }, [dispatch, id]);
+  }, [dispatch]);
 
-  const renderProductDetail = () => {
-    if (product === null || categories === null || brands === null) {
+  const renderProductAdd = () => {
+    if (categories === null || brands === null) {
       return (
         <Col xs="12" sm="12" md="12" lg="12" className="text-center">
           <Spinner color="primary" />
@@ -92,9 +91,9 @@ function ManageProductDetail() {
       );
     }
     return (
-      <Form className="d-flex flex-column">
+      <Form onSubmit={(e) => handleSubmit(e)}>
         <div className="my-4">
-          <img src={product.images} alt="Ảnh" />
+          <img src="" alt="Ảnh" />
         </div>
 
         <div className="d-flex flex-row justify-content-between my-4">
@@ -110,6 +109,8 @@ function ManageProductDetail() {
               value={productName}
               onChange={({ target }) => setProductName(target.value)}
               style={{ width: "15rem" }}
+              placeholder="Name of product..."
+              required
             />
           </Form.Group>
 
@@ -120,17 +121,16 @@ function ManageProductDetail() {
               as="select"
               onChange={({ target }) => setBrandID(Number(target.value))}
               style={{ width: "15rem" }}
+              required
             >
-              <option value={product.brandId}>{product.brandName}</option>
-              {brands.map((item, index) =>
-                item.brandID !== product.brandID ? (
-                  <option key={index} value={item.brandID}>
-                    {item.brandName}
-                  </option>
-                ) : (
-                  ""
-                )
-              )}
+              <option value="" hidden>
+                -- Select Brand --
+              </option>
+              {brands.map((item, index) => (
+                <option key={index} value={item.brandID}>
+                  {item.brandName}
+                </option>
+              ))}
             </Form.Control>
           </Form.Group>
 
@@ -139,21 +139,18 @@ function ManageProductDetail() {
             <Form.Control
               className="h6 p-2"
               as="select"
-              onChange={({ target }) => {
-                setCategoryID(Number(target.value));
-              }}
+              onChange={({ target }) => setCategoryID(Number(target.value))}
               style={{ width: "15rem" }}
+              required
             >
-              <option value={product.categoryID}>{product.categoryName}</option>
-              {categories.map((item, index) =>
-                item.categoryID !== product.categoryID ? (
-                  <option key={index} value={item.categoryID}>
-                    {item.categoryName}
-                  </option>
-                ) : (
-                  ""
-                )
-              )}
+              <option value="" hidden>
+                -- Select Category --
+              </option>
+              {categories.map((item, index) => (
+                <option key={index} value={item.categoryID}>
+                  {item.categoryName}
+                </option>
+              ))}
             </Form.Control>
           </Form.Group>
         </div>
@@ -168,7 +165,8 @@ function ManageProductDetail() {
               id="productPrice"
               value={productPrice}
               onChange={({ target }) => setProductPrice(Number(target.value))}
-              style={{ width: "15rem" }}
+              style={{ width: "13rem" }}
+              required
             />
           </Form.Group>
 
@@ -181,7 +179,8 @@ function ManageProductDetail() {
               id="warranty"
               value={warranty}
               onChange={({ target }) => setWarranty(Number(target.value))}
-              style={{ width: "15rem" }}
+              style={{ width: "13rem" }}
+              required
             />
           </Form.Group>
 
@@ -194,12 +193,27 @@ function ManageProductDetail() {
               id="stock"
               value={stock}
               onChange={({ target }) => setStock(Number(target.value))}
-              style={{ width: "15rem" }}
+              style={{ width: "13rem" }}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="d-flex flex-column">
+            <Form.Label className="font-weight-bold h5">Purchased</Form.Label>
+            <Form.Control
+              className="h6 p-2"
+              type="number"
+              name="purchased"
+              id="purchased"
+              value={purchased}
+              onChange={({ target }) => setPurchased(Number(target.value))}
+              style={{ width: "13rem" }}
+              required
             />
           </Form.Group>
         </div>
 
-        <Form.Group className="d-flex flex-column my-2">
+        <Form.Group className="d-flex flex-column my-3">
           <Form.Label className="font-weight-bold h5">
             Short Description
           </Form.Label>
@@ -210,10 +224,12 @@ function ManageProductDetail() {
             id="shortDescrip"
             value={shortDescrip}
             onChange={({ target }) => setShortDescrip(target.value)}
+            placeholder="Briefly introduces..."
+            required
           />
         </Form.Group>
 
-        <Form.Group className="d-flex flex-column my-2">
+        <Form.Group className="d-flex flex-column my-3">
           <Form.Label className="font-weight-bold h5">
             Long Description
           </Form.Label>
@@ -224,13 +240,97 @@ function ManageProductDetail() {
             id="longDescrip"
             value={longDescrip}
             onChange={({ target }) => setLongDescrip(target.value)}
+            placeholder="Fully introduces..."
+            required
           />
         </Form.Group>
 
-        <div className="d-flex flex-row justify-content-between my-4">
+        <Form.Group className="d-flex flex-column my-3">
+          <Form.Label className="font-weight-bold h5">
+            Short Text of Technology
+          </Form.Label>
+          <Form.Control
+            className="h6 p-2"
+            type="text"
+            name="shortTech"
+            id="shortTech"
+            value={shortTech}
+            onChange={({ target }) => setShortTech(target.value)}
+            placeholder="Generally evaluates..."
+            required
+          />
+        </Form.Group>
+
+        <div className="d-flex flex-row justify-content-between mt-5">
           <Form.Group className="d-flex flex-column">
             <Form.Label className="font-weight-bold h5">
-              {product.specName1}
+              Title of Spec 1
+            </Form.Label>
+            <Form.Control
+              className="h6 p-2"
+              type="text"
+              name="specName1"
+              id="specName1"
+              value={specName1}
+              onChange={({ target }) => setSpecName1(target.value)}
+              placeholder="Title_1..."
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="d-flex flex-column">
+            <Form.Label className="font-weight-bold h5">
+              Title of Spec 2
+            </Form.Label>
+            <Form.Control
+              className="h6 p-2"
+              type="text"
+              name="specName2"
+              id="specName2"
+              value={specName2}
+              onChange={({ target }) => setSpecName2(target.value)}
+              placeholder="Title_2..."
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="d-flex flex-column">
+            <Form.Label className="font-weight-bold h5">
+              Title of Spec 3
+            </Form.Label>
+            <Form.Control
+              className="h6 p-2"
+              type="text"
+              name="specName3"
+              id="specName3"
+              value={specName3}
+              onChange={({ target }) => setSpecName3(target.value)}
+              placeholder="Title_3..."
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="d-flex flex-column">
+            <Form.Label className="font-weight-bold h5">
+              Title of Spec 4
+            </Form.Label>
+            <Form.Control
+              className="h6 p-2"
+              type="text"
+              name="specName4"
+              id="specName4"
+              value={specName4}
+              onChange={({ target }) => setSpecName4(target.value)}
+              placeholder="Title_4..."
+              required
+            />
+          </Form.Group>
+        </div>
+
+        <div className="d-flex flex-row justify-content-between mb-4 mt-3">
+          <Form.Group className="d-flex flex-column">
+            <Form.Label className="font-weight-bold h5">
+              Value of Spec 1
             </Form.Label>
             <Form.Control
               className="h6 p-2"
@@ -239,12 +339,13 @@ function ManageProductDetail() {
               id="spec1"
               value={spec1}
               onChange={({ target }) => setSpec1(target.value)}
+              placeholder="Value_1..."
             />
           </Form.Group>
 
           <Form.Group className="d-flex flex-column">
             <Form.Label className="font-weight-bold h5">
-              {product.specName2}
+              Value of Spec 2
             </Form.Label>
             <Form.Control
               className="h6 p-2"
@@ -253,12 +354,13 @@ function ManageProductDetail() {
               id="spec2"
               value={spec2}
               onChange={({ target }) => setSpec2(target.value)}
+              placeholder="Value_2..."
             />
           </Form.Group>
 
           <Form.Group className="d-flex flex-column">
             <Form.Label className="font-weight-bold h5">
-              {product.specName3}
+              Value of Spec 3
             </Form.Label>
             <Form.Control
               className="h6 p-2"
@@ -267,12 +369,13 @@ function ManageProductDetail() {
               id="spec3"
               value={spec3}
               onChange={({ target }) => setSpec3(target.value)}
+              placeholder="Value_3..."
             />
           </Form.Group>
 
           <Form.Group className="d-flex flex-column">
             <Form.Label className="font-weight-bold h5">
-              {product.specName4}
+              Value of Spec 4
             </Form.Label>
             <Form.Control
               className="h6 p-2"
@@ -281,17 +384,18 @@ function ManageProductDetail() {
               id="spec4"
               value={spec4}
               onChange={({ target }) => setSpec4(target.value)}
+              placeholder="Value_4..."
             />
           </Form.Group>
         </div>
 
         <div className="d-flex justify-content-end mt-3">
           <Button
-            className="btn-return"
+            className="btn-return-2"
             style={{
               backgroundColor: "white",
-              borderColor: "#0091ff",
-              color: "#0091ff",
+              borderColor: "#777676",
+              color: "#777676",
               fontSize: "18px",
               paddingInline: "2rem",
               paddingBlock: "0.5rem",
@@ -304,54 +408,17 @@ function ManageProductDetail() {
           </Button>
 
           <Button
-            className="btn-edit ml-3 px-xl-5"
+            className="ml-3 px-xl-5"
             style={{
-              backgroundColor: "#E77733",
               border: 0,
               fontSize: "18px",
               paddingInline: "2rem",
               paddingBlock: "0.5rem",
             }}
-            onClick={() => {
-              setShow(true);
-            }}
+            type="submit"
           >
-            Edit
+            Add
           </Button>
-
-          <Modal
-            show={show}
-            onHide={() => setShow(false)}
-            style={{
-              height: "16rem",
-            }}
-          >
-            <ModalHeader
-              className="d-flex justify-content-start align-content-center h3 text-center m-0"
-              style={{ color: "orange" }}
-            >
-              Question?
-            </ModalHeader>
-            <ModalHeader className="d-flex justify-content-center align-content-center h4 text-center m-0">
-              Are you sure you want to update this product?
-            </ModalHeader>
-            <Modal.Footer>
-              <Button
-                variant="secondary"
-                onClick={() => setShow(false)}
-                className="px-4"
-              >
-                No
-              </Button>
-              <Button
-                variant="primary"
-                onClick={(e) => handleSubmit(e)}
-                className="px-4"
-              >
-                Sure
-              </Button>
-            </Modal.Footer>
-          </Modal>
         </div>
       </Form>
     );
@@ -360,29 +427,37 @@ function ManageProductDetail() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let productToUpdate = {
+    let newpPoductID = createNewProductID(allProducts);
+    newpPoductID++;
+
+    let productToAdd = {
+      productID: newpPoductID,
       categoryID: categoryID,
       brandID: brandID,
+      productRate: 0,
       productName: productName,
       productPrice: productPrice,
       shortDescrip: shortDescrip,
       longDescrip: longDescrip,
       stock: stock,
       warranty: warranty,
-      specName1: product.specName1,
+      purchased: purchased,
+      specName1: specName1,
       spec1: spec1,
-      specName2: product.specName2,
+      specName2: specName2,
       spec2: spec2,
-      specName3: product.specName3,
+      specName3: specName3,
       spec3: spec3,
-      specName4: product.specName4,
+      specName4: specName4,
       spec4: spec4,
-      shortTech: product.shortTech,
-      images: product.images,
+      shortTech: shortTech,
+      totalReviews: 0,
+      images: "",
     };
 
-    const updateProduct = async (data, id) => {
-      return ProductApi.updateProduct(data, id)
+    const addProduct = async (data) => {
+      //console.log(productToAdd);
+      return ProductApi.addProduct(data)
         .then((res) => {
           dispatch(getAllProducts()).then(history.push("/ManageProducts"));
         })
@@ -390,10 +465,10 @@ function ManageProductDetail() {
           console.log(err);
         });
     };
-    updateProduct(productToUpdate, id);
+    addProduct(productToAdd);
   };
 
-  return <Fragment>{renderProductDetail()}</Fragment>;
+  return <Fragment>{renderProductAdd()}</Fragment>;
 }
 
-export default ManageProductDetail;
+export default ManageProductAdd;

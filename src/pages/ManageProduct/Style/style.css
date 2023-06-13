@@ -161,3 +161,31 @@ td span {
     color: #7e7c7a;
   }
 }
+
+.btn-edit:hover {
+  background-color: #eb9155 !important;
+}
+
+.btn-edit:active {
+  background-color: #e6681a !important;
+}
+
+.btn-return:hover {
+  background-color: #0091ff !important;
+  color: #ffffff !important;
+}
+
+.btn-return:active {
+  background-color: #5dadea !important;
+  color: #ffffff !important;
+}
+
+.btn-return-2:hover {
+  background-color: #777676 !important;
+  color: #ffffff !important;
+}
+
+.btn-return-2:active {
+  background-color: #a3a3a3 !important;
+  color: #ffffff !important;
+}
