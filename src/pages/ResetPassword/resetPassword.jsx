@@ -1,0 +1,84 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { resetPassword, updateError } from "utilities/slices/userSlice";
+import "./_resetpassword.scss";
+export const ResetPassword = () => {
+  const [info, setInfo] = useState({});
+  const { isSuccess, error } = useSelector((state) => state.user.data);
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (isSuccess) history.push("/login");
+  }, [isSuccess, history, dispatch]);
+
+  const handleChangeInputText = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setInfo({ ...info, [name]: value });
+    dispatch(updateError({ error: "" }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    async function submitToreset() {
+      await dispatch(resetPassword(info));
+    }
+    submitToreset();
+  };
+  return (
+    <div className="row w-100">
+      <div className="col-sm-6 reset-background"></div>
+      <div className="col-sm-6 reset-wrapper">
+        <div className="reset-wrapper-content">
+          <div className="reset-title">Reset your password</div>
+          <form>
+            <div className="send-otp">
+              <p>Email</p>
+              <input
+                className="mb-4 w-100"
+                name="userEmail"
+                onChange={handleChangeInputText}
+                required
+                placeholder="Enter your email"
+              />
+            </div>
+
+            <p>New password</p>
+            <input
+              name="newPassword"
+              className="mb-4"
+              onChange={handleChangeInputText}
+              required
+              type="password"
+              placeholder="Enter your new password"
+            />
+            <p>OTP</p>
+            <input
+              name="otp"
+              className="mb-4"
+              onChange={handleChangeInputText}
+              required
+              type="password"
+              placeholder="Enter your OTP"
+            />
+
+            <div className="mb-2" style={{ color: "red" }}>
+              {error}
+            </div>
+            <div className="text-center">
+              <button
+                className="btn-primary mb-2 px-3 py-2"
+                onClick={handleSubmit}
+              >
+                Change password
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};

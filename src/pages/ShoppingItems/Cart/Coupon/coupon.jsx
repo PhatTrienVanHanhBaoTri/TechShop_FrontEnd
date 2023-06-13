@@ -27,6 +27,7 @@ function Coupon() {
 
   const submitCoupon = async (input) => {
     // TODO: solve when status code is 404
+    setCoupon(null);
     let response = await CouponApi.getAllCoupons();
     let valid = false;
     let user = null;
@@ -37,8 +38,9 @@ function Coupon() {
       
       if (coupon.couponCode === input) {
         const used = await CouponApi.checkUsedCoupon(user.userID, coupon.id);
-        console.log(used);
-        if (!used) {
+        const expired = await checkExpiredCoupon(coupon.expiry);
+
+        if (!used && expired === false) {
           valid = true;
           setCoupon(coupon);
         }
@@ -55,6 +57,17 @@ function Coupon() {
         setCouponStatus("available");
     }
   };
+
+  const checkExpiredCoupon = (expiry) => {
+    const now = new Date();
+    const exp = new Date(expiry);
+
+    if (now <= exp) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   const renderCouponStatus = (status) => {
     return status !== null ? (

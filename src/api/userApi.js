@@ -26,18 +26,10 @@ const UserApi = {
     const url = `${UrlConstant.GET_USER_BY_EMAIL}/${email}`;
     return axiosClient.get(url);
   },
-  register: async (params) => {
-    let { email, fullname, pswd, DOB, phone, address, gender } = params;
+    register: async (params) => {
+    let { email, fullname, pswd, dob, phone, address, gender} = params;
     const url = `${UrlConstant.REGISTER}`;
-    const data = JSON.stringify({
-      email,
-      fullname,
-      pswd,
-      DOB,
-      phone,
-      address,
-      gender,
-    });
+    const data = JSON.stringify({ email, fullname, pswd, dob, phone, address, gender });
 
     return axiosClient
       .post(url, data)
@@ -49,8 +41,8 @@ const UserApi = {
       });
   },
 
-  forgotPassword: async (params) => {
-    const url = `${UrlConstant.FORGOT_PASSWORD} + ${params}`;
+    forgotPassword: async (params) => {
+    const url = `${UrlConstant.FORGOT_PASSWORD}/${params}`;
     return axiosClient
       .post(url)
       .then((response) => {
@@ -61,13 +53,13 @@ const UserApi = {
       });
   },
 
-  resetPassword: async (params) => {
-    let { newPassword, OTP, userEmail } = params;
+    resetPassword: async (params) => {
+    let { newPassword, otp, userEmail } = params;
     const url = `${UrlConstant.RESET_PASSWORD}`;
-    const data = JSON.stringify({ newPassword, OTP, userEmail });
-
+    const data = JSON.stringify({ newPassword, otp, userEmail });
+      console.log(data);
     return axiosClient
-      .post(url, data)
+      .put(url, data)
       .then((response) => {
         return response;
       })
