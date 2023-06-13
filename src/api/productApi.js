@@ -56,5 +56,38 @@ const ProductApi = {
     const url = `${UrlConstant.GET_PROPOSED_PRODUCTS}`;
     return axiosClient.get(url);
   },
+  addProduct: async (data) => {
+    const url = `${UrlConstant.ADD_PRODUCT}`;
+    const body = JSON.stringify(data);
+    return axiosClient
+      .post(url, body)
+
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => Promise.reject(error));
+  },
+  updateProduct: async (data, id) => {
+    const url = `${UrlConstant.UPDATE_PRODUCT}/${id}`;
+
+    return axiosClient
+      .put(url, data)
+
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => Promise.reject(error));
+  },
+  deleteProduct: async (id) => {
+    const url = `${UrlConstant.DELETE_PRODUCT}/${id}`;
+
+    return axiosClient
+      .delete(url)
+
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => Promise.reject(error));
+  },
 };
 export default ProductApi;

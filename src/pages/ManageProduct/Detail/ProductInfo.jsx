@@ -22,6 +22,7 @@ function ProductInfo(props) {
           <ProductRating rate={product.productRate} />
         </div>
       </div>
+
       <div className="title">
         <div className="product-price">
           {handlePrice(product.productPrice)} <u>đ</u>
@@ -29,6 +30,34 @@ function ProductInfo(props) {
         <div className="">
           <i>Brand: </i>
           <span className="product-price">{product.brandName}</span>
+        </div>
+      </div>
+
+      <div className="title">
+        <div
+          className="stock-status"
+          style={{ display: "flex", alignItems: "center" }}
+        >
+          Status:
+          <span
+            className={product.stockStatus}
+            style={{ paddingLeft: "0.5rem" }}
+          >
+            {product.stockStatus === "in-stock" ? "In Stock" : "Out of Stock"}
+          </span>
+        </div>
+        <div
+          className="stock-status"
+          style={{ display: "flex", alignItems: "center" }}
+        >
+          {product.stock > 0 ? (
+            <p>
+              Stock:{" "}
+              <span style={{ paddingLeft: "0.25rem" }}>{product.stock}</span>
+            </p>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </React.Fragment>

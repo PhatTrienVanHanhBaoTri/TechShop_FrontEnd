@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import Search from "pages/Header/Search/search";
 import "./_nav.scss";
 import { getCategories } from "utilities/slices/categorySlice";
 
@@ -93,7 +92,7 @@ function Nav(props) {
           </NavLink>
         </li>
       )}
-      {/* <button onClick={() => console.log(state)}>console</button> */}
+      <button onClick={() => console.log(state)}>console</button>
     </ul>
   );
 }
