@@ -52,9 +52,7 @@ function App() {
 
                 <Route path={["/ManageProducts", "/ManageProducts/:id"]}>
                   <ManageProduct
-                    authorized={
-                      state.user.data.info.roleID === 1 ? true : false
-                    }
+                    authorized={state.user.data.roleID === 1 ? true : false}
                   />
                 </Route>
 
@@ -64,11 +62,11 @@ function App() {
                 <Route path="/register">
                   <Register />
                 </Route>
-                <Route path = "/forgot-password"> 
-                <ForgotPassword/>
+                <Route path="/forgot-password">
+                  <ForgotPassword />
                 </Route>
-                  <Route path = "/reset-password"> 
-                <ResetPassword/>
+                <Route path="/reset-password">
+                  <ResetPassword />
                 </Route>
                 <Route path="/sales">
                   <Sale />
