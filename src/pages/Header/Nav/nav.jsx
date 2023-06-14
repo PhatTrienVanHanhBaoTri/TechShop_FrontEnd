@@ -92,7 +92,7 @@ function Nav(props) {
           </NavLink>
         </li>
       )}
-      <button onClick={() => console.log(state)}>console</button>
+      {/* <button onClick={() => console.log(state)}>console</button> */}
     </ul>
   );
 }

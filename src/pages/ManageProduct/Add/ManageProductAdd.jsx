@@ -391,14 +391,15 @@ function ManageProductAdd() {
 
         <div className="d-flex justify-content-end mt-3">
           <Button
-            className="btn-return-2"
+            className="btn-return"
             style={{
               backgroundColor: "white",
-              borderColor: "#777676",
-              color: "#777676",
+              borderColor: "#0091ff",
+              color: "#0091ff",
               fontSize: "18px",
               paddingInline: "2rem",
               paddingBlock: "0.5rem",
+              width: "auto",
             }}
             onClick={(e) => {
               history.push("/ManageProducts");
@@ -414,6 +415,7 @@ function ManageProductAdd() {
               fontSize: "18px",
               paddingInline: "2rem",
               paddingBlock: "0.5rem",
+              width: "auto",
             }}
             type="submit"
           >
