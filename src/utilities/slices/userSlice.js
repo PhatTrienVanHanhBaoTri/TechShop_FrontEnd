@@ -42,14 +42,14 @@ export const initialStateUseLoggedIn = () => {
 
 export const persist = () => {
   let result = JSON.parse(window.localStorage.getItem("persist-key"));
-  return result === null ? {} : result;
+  return result === null ? 2 : result.roleID;
 };
 
 const user = createSlice({
   name: "user",
   initialState: {
     data: {
-      roleID: 2,
+      roleID: persist(),
       isLoggedIn: initialStateUseLoggedIn(),
       isSuccess: null,
       error: "",

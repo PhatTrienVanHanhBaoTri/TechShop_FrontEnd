@@ -295,6 +295,7 @@ function ManageProductDetail() {
               fontSize: "18px",
               paddingInline: "2rem",
               paddingBlock: "0.5rem",
+              width: "auto",
             }}
             onClick={(e) => {
               history.push("/ManageProducts");
@@ -311,6 +312,7 @@ function ManageProductDetail() {
               fontSize: "18px",
               paddingInline: "2rem",
               paddingBlock: "0.5rem",
+              width: "auto",
             }}
             onClick={() => {
               setShow(true);

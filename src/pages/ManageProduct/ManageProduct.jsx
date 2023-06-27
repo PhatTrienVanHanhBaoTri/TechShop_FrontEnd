@@ -164,7 +164,11 @@ export default function ManageProduct({ authorized }) {
                 </div>
 
                 <div className="d-flex justify-content-end">
-                  <Button onClick={() => history.push("/ManageProducts/add")}>
+                  <Button
+                    className="btn-add"
+                    onClick={() => history.push("/ManageProducts/add")}
+                    style={{ width: "auto" }}
+                  >
                     <i className="fa fa-plus mr-2"></i>Add a product
                   </Button>
                 </div>
