@@ -17,9 +17,12 @@
   border: 1px solid #e77733;
   border-radius: 10px;
   color: #f5f5f5;
-  &:hover {
+  &:active,
+  &:hover,
+  &:focus {
     background: #e77733;
-    scale: 1.1;
+    box-shadow: none;
+    border-color: #e77733;
   }
 }
 .btn-secondary {

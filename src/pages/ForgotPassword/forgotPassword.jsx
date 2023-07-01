@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
+import { Spinner } from "reactstrap";
+
 import {
   forgotPassword,
+  updateEmail,
   updateError,
   updateStatus,
 } from "utilities/slices/userSlice";
@@ -12,11 +15,12 @@ export const ForgotPassword = () => {
   const { isSuccess, error } = useSelector((state) => state.user.data);
   const dispatch = useDispatch();
   const history = useHistory();
+  const [isloading, setLoading] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(updateError({ error: "" }));
-    console.log(isSuccess);
+    setLoading(false);
     if (isSuccess) {
       dispatch(updateStatus({ isSuccess: false }));
       history.push("/reset-password");
@@ -24,19 +28,30 @@ export const ForgotPassword = () => {
   }, [isSuccess, history, dispatch]);
 
   const handleSubmit = async (e) => {
-    dispatch(updateError({ error: "" }));
-    e.preventDefault();
-    async function submitToSendOTP() {
-      await dispatch(forgotPassword(email));
+    if (!email) {
+      updateError({ error: "Please enter your email" });
+    } else {
+      dispatch(updateError({ error: "" }));
+      e.preventDefault();
+      async function submitToSendOTP() {
+        await dispatch(forgotPassword(email));
+      }
+      submitToSendOTP();
+      dispatch(updateEmail({ userEmail: email }));
+      setLoading(true);
     }
-    submitToSendOTP();
   };
   return (
     <div className="row w-100">
       <div className="col-sm-6 forgot-background"></div>
       <div className="col-sm-6 forgot-wrapper">
-        <div className="forgot-wrapper-content">
-          <div className="forgot-title mb-4">Find your password</div>
+        <div className="forgot-wrapper-content position-relative">
+          {isloading && (
+            <div className=" my-auto text-center position-absolute h-100 opacity-50 bg-white w-100 d-flex align-items-center justify-content-center">
+              <Spinner color="primary" />
+            </div>
+          )}
+          <div className="forgot-title mb-4">Forgot password</div>
           <form>
             <div className="send-otp">
               <p>Email</p>

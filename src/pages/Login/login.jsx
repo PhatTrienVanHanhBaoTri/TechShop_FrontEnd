@@ -32,9 +32,12 @@ function Login() {
       setLoading(false);
     }
     submitToLogin();
+    setLoading(true);
   };
 
   useEffect(() => {
+    setLoading(false);
+
     window.scrollTo(0, 0);
     const checkLoggedInStatus = () => {
       const status = cookiesService.getCookies("user");
@@ -54,13 +57,14 @@ function Login() {
     <div className="row w-100">
       <div className="col-sm-6 login-background"></div>
       <div className="col-sm-6 login-wrapper">
-        <div className="login-wrapper-content">
+        <div className="login-wrapper-content position-relative">
           {isloading && (
-            <div className="text-center">
+            <div className=" my-auto text-center position-absolute h-100 opacity-50 bg-white w-100 d-flex align-items-center justify-content-center">
               <Spinner color="primary" />
             </div>
           )}
-          ;<div className="login-title mb-4">Welcome to TechShop</div>
+
+          <div className="login-title mb-4">Welcome to TechShop</div>
           <form>
             <p>Email</p>
             <input

@@ -7,6 +7,7 @@ import PrivateRoute from "components/privateRoute";
 import Sale from "components/sale";
 import Home from "pages/Home/main";
 import Login from "pages/Login/login";
+import { VerifyEmail } from "pages/VerifyEmail/verifyEmail";
 import Product from "pages/Product/main";
 import ShoppingCart from "pages/ShoppingItems/main";
 import { Register } from "pages/Register/register";
@@ -67,6 +68,9 @@ function App() {
                 </Route>
                 <Route path="/reset-password">
                   <ResetPassword />
+                </Route>
+                 <Route path="/verify-email">
+                  <VerifyEmail />
                 </Route>
                 <Route path="/sales">
                   <Sale />
