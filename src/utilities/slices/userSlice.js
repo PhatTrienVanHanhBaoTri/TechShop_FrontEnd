@@ -35,6 +35,15 @@ export const resetPassword = createAsyncThunk(
     return token;
   }
 );
+
+export const verifyEmail = createAsyncThunk(
+  "user/reset-password",
+  async (params) => {
+    const token = await UserApi.verifyEmail(params);
+    return token;
+  }
+);
+
 export const initialStateUseLoggedIn = () => {
   let result = cookiesService.getCookies("user");
   return result === undefined || result === null ? false : true;
@@ -52,6 +61,7 @@ const user = createSlice({
       roleID: persist(),
       isLoggedIn: initialStateUseLoggedIn(),
       isSuccess: null,
+      userEmail: "",
       error: "",
     },
   },
@@ -64,6 +74,9 @@ const user = createSlice({
     },
     updateStatus: (state, action) => {
       state.data.isSuccess = action.payload.isSuccess;
+    },
+    updateEmail: (state, action) => {
+      state.data.userEmail = action.payload.userEmail;
     },
   },
   extraReducers: {
@@ -103,7 +116,14 @@ const user = createSlice({
     },
     [resetPassword.rejected]: (state, action) => {
       state.data.isSuccess = false;
-      state.data.isSuccessResetPassword = "Your OTP is not valid";
+      state.data.error = "Your OTP is not valid";
+    },
+     [verifyEmail.fulfilled]: (state, action) => {
+      state.data.isSuccess = true;
+    },
+    [verifyEmail.rejected]: (state, action) => {
+      state.data.isSuccess = false;
+      state.data.error = "Your OTP is not valid";
     },
   },
 });
@@ -114,4 +134,5 @@ export const {
   updateErrorSendOTP,
   updateErrorResetPassword,
   updateStatus,
+  updateEmail
 } = user.actions;

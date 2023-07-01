@@ -8,11 +8,14 @@ import {
   updateEmail,
   updateError,
   updateStatus,
+  verifyEmail,
 } from "utilities/slices/userSlice";
-import "./_forgotPassword.scss";
-export const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
-  const { isSuccess, error } = useSelector((state) => state.user.data);
+import "./_verifyEmail.scss";
+export const VerifyEmail = () => {
+  const [info, setInfo] = useState({});
+  const { isSuccess, error, userEmail } = useSelector(
+    (state) => state.user.data
+  );
   const dispatch = useDispatch();
   const history = useHistory();
   const [isloading, setLoading] = useState(false);
@@ -20,24 +23,35 @@ export const ForgotPassword = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(updateError({ error: "" }));
+    setInfo({});
+    setInfo({ ...info, userEmail: userEmail });
     setLoading(false);
     if (isSuccess) {
       dispatch(updateStatus({ isSuccess: false }));
-      history.push("/reset-password");
+      history.push("/login");
     }
   }, [isSuccess, history, dispatch]);
 
+  const handleChangeInputText = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setInfo({ ...info, [name]: value });
+    dispatch(updateError({ error: "" }));
+  };
+
   const handleSubmit = async (e) => {
-    if (!email) {
-      updateError({ error: "Please enter your email" });
+    console.log(info);
+    if (!info) {
+      updateError({ error: "Please enter your otp" });
     } else {
       dispatch(updateError({ error: "" }));
+      setInfo({ info, userEmail });
+
       e.preventDefault();
       async function submitToSendOTP() {
-        await dispatch(forgotPassword(email));
+        await dispatch(verifyEmail(info));
       }
       submitToSendOTP();
-      dispatch(updateEmail({ userEmail: email }));
       setLoading(true);
     }
   };
@@ -51,16 +65,16 @@ export const ForgotPassword = () => {
               <Spinner color="primary" />
             </div>
           )}
-          <div className="forgot-title mb-4">Forgot password</div>
+          <div className="forgot-title mb-4">Verify email</div>
           <form>
             <div className="send-otp">
-              <p>Email</p>
+              <p>OTP</p>
               <input
                 className="mb-4"
-                name="userEmail"
-                onChange={(e) => setEmail(e.target.value)}
+                name="otp"
+                onChange={handleChangeInputText}
                 required
-                placeholder="Enter your email"
+                placeholder="Enter your OTP"
               />
             </div>
 
@@ -73,9 +87,6 @@ export const ForgotPassword = () => {
                 onClick={handleSubmit}
               >
                 Send OTP
-              </button>
-              <button className="btn-secondary px-3 py-2">
-                <Link to="/login">Back to Login</Link>
               </button>
             </div>
           </form>
