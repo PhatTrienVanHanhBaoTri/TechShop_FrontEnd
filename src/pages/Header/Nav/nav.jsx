@@ -37,49 +37,57 @@ function Nav(props) {
 
   return (
     <ul className="pl-md-3 navbar-nav m-auto mb-lg-0 d-flex justify-item-center align-items-center">
-      <li className="nav-item pt-md-3 m-3">
-        <NavLink
-          className="text-nowrap"
-          activeClassName="active"
-          to="/home"
-          exact
-        >
-          Home
-        </NavLink>
-      </li>
+      {state.user.data.roleID !== 1 && (
+        <li className="nav-item pt-md-3 m-3">
+          <NavLink
+            className="text-nowrap"
+            activeClassName="active"
+            to="/home"
+            exact
+          >
+            Home
+          </NavLink>
+        </li>
+      )}
 
-      <li className="nav-item pt-md-3 m-3 dropdown-switcher">
-        <NavLink
-          className="text-nowrap"
-          activeClassName="active"
-          to="/products"
-        >
-          Products
-        </NavLink>
-        <div className="dropdown d-md-block d-none">
-          <Row>{renderCategoryModal(stateCategories.data)}</Row>
-        </div>
-      </li>
+      {state.user.data.roleID !== 1 && (
+        <li className="nav-item pt-md-3 m-3 dropdown-switcher">
+          <NavLink
+            className="text-nowrap"
+            activeClassName="active"
+            to="/products"
+          >
+            Products
+          </NavLink>
+          <div className="dropdown d-md-block d-none">
+            <Row>{renderCategoryModal(stateCategories.data)}</Row>
+          </div>
+        </li>
+      )}
 
-      <li className="nav-item pt-md-3 m-3">
-        <NavLink
-          className="text-nowrap"
-          activeClassName="active"
-          to="/wish-list"
-        >
-          Wish List
-        </NavLink>
-      </li>
+      {state.user.data.roleID !== 1 && (
+        <li className="nav-item pt-md-3 m-3">
+          <NavLink
+            className="text-nowrap"
+            activeClassName="active"
+            to="/wish-list"
+          >
+            Wish List
+          </NavLink>
+        </li>
+      )}
 
-      <li className="nav-item pt-md-3 m-3">
-        <NavLink
-          className="text-nowrap"
-          activeClassName="active"
-          to="/contacts"
-        >
-          Contacts
-        </NavLink>
-      </li>
+      {state.user.data.roleID !== 1 && (
+        <li className="nav-item pt-md-3 m-3">
+          <NavLink
+            className="text-nowrap"
+            activeClassName="active"
+            to="/contacts"
+          >
+            Contacts
+          </NavLink>
+        </li>
+      )}
 
       {state.user.data.roleID === 1 && (
         <li className="nav-item pt-md-3 m-3">
