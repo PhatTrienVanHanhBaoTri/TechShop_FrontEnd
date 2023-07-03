@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import { Spinner } from "reactstrap";
 
 import {
-  forgotPassword,
+  verifyPassword,
   updateEmail,
   updateError,
   updateStatus,
@@ -57,15 +57,15 @@ export const VerifyEmail = () => {
   };
   return (
     <div className="row w-100">
-      <div className="col-sm-6 forgot-background"></div>
-      <div className="col-sm-6 forgot-wrapper">
-        <div className="forgot-wrapper-content position-relative">
+      <div className="col-sm-6 verify-background"></div>
+      <div className="col-sm-6 verify-wrapper">
+        <div className="verify-wrapper-content position-relative">
           {isloading && (
             <div className=" my-auto text-center position-absolute h-100 opacity-50 bg-white w-100 d-flex align-items-center justify-content-center">
               <Spinner color="primary" />
             </div>
           )}
-          <div className="forgot-title mb-4">Verify email</div>
+          <div className="verify-title mb-4">Verify email</div>
           <form>
             <div className="send-otp">
               <p>OTP</p>

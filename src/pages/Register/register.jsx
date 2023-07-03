@@ -38,6 +38,8 @@ export const Register = () => {
   };
   useEffect(() => {
     setLoading(false);
+    dispatch(updateError({ error: "" }));
+
     window.scrollTo(0, 0);
     if (isSuccess) {
       dispatch(updateStatus({ isSuccess: false }));
