@@ -27,10 +27,16 @@ export const ADD_REVIEW = "/api/v1/review";
 // COUPON
 export const GET_ALL_COUPONS = "api/v1/coupons";
 
-export const GET_COUPON_BY_ID = "/coupons";
+export const GET_COUPON_BY_ID = "api/v1/coupons";
 
 export const CHECK_USED_COUPON = (userID, couponID) =>
   `api/v1/invoice/${couponID}/user/${userID}`;
+
+export const ADD_COUPON = "/api/v1/coupons";
+
+export const UPDATE_COUPON = "/api/v1/coupons";
+
+export const DELETE_COUPON = "/api/v1/coupons";
 
 // USER
 export const LOGIN = "api/v1/auth/login";
