@@ -57,9 +57,23 @@ const UserApi = {
     let { newPassword, otp, userEmail } = params;
     const url = `${UrlConstant.RESET_PASSWORD}`;
     const data = JSON.stringify({ newPassword, otp, userEmail });
-      console.log(data);
     return axiosClient
       .put(url, data)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+      verifyEmail: async (params) => {
+    let {  emailAddress, otp } = params;
+    const url = `${UrlConstant.VERIFY_EMAIL}`;
+    const data = JSON.stringify({   emailAddress,otp });
+    console.log(data);
+    return axiosClient
+      .post(url, data)
       .then((response) => {
         return response;
       })

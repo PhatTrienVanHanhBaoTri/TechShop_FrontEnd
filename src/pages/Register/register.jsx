@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Spinner } from "reactstrap";
+
 import {
   register,
   updateError,
   updateStatus,
+  updateEmail,
 } from "utilities/slices/userSlice";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
@@ -14,6 +17,8 @@ export const Register = () => {
   const dispatch = useDispatch();
   const [info, setInfo] = useState({});
   const history = useHistory();
+  const [isloading, setLoading] = useState(false);
+
   const { isSuccess, error } = useSelector((state) => state.user.data);
   const handleChangeInputText = (e) => {
     let name = e.target.name;
@@ -28,8 +33,11 @@ export const Register = () => {
       await dispatch(register(info));
     }
     submitToRegister();
+    dispatch(updateEmail({ userEmail: info.email }));
+    setLoading(true);
   };
   useEffect(() => {
+    setLoading(false);
     window.scrollTo(0, 0);
     if (isSuccess) {
       dispatch(updateStatus({ isSuccess: false }));
@@ -40,7 +48,12 @@ export const Register = () => {
     <div className="row w-100">
       <div className="col-sm-5 register-background"></div>
       <div className="col-sm-7 register-wrapper">
-        <div className="register-wrapper-content">
+        <div className="register-wrapper-content position-relative">
+          {isloading && (
+            <div className=" my-auto text-center position-absolute h-100 opacity-50 bg-white w-100 d-flex align-items-center justify-content-center">
+              <Spinner color="primary" />
+            </div>
+          )}
           <div className="register-title mb-4">Create your account</div>
           <form>
             <div className="form-input">

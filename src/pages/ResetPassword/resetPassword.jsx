@@ -2,17 +2,24 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { resetPassword, updateError } from "utilities/slices/userSlice";
+import { Spinner } from "reactstrap";
 import "./_resetpassword.scss";
 export const ResetPassword = () => {
   const [info, setInfo] = useState({});
-  const { isSuccess, error } = useSelector((state) => state.user.data);
+  const { isSuccess, error, userEmail } = useSelector(
+    (state) => state.user.data
+  );
   const dispatch = useDispatch();
   const history = useHistory();
+  const [isloading, setLoading] = useState(false);
 
   useEffect(() => {
+    setInfo({});
+    setInfo({ ...info, userEmail: userEmail });
     window.scrollTo(0, 0);
+    setLoading(false);
     if (isSuccess) history.push("/login");
-  }, [isSuccess, history, dispatch]);
+  }, [isSuccess, history, dispatch, userEmail]);
 
   const handleChangeInputText = (e) => {
     let name = e.target.name;
@@ -22,30 +29,30 @@ export const ResetPassword = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    async function submitToreset() {
-      await dispatch(resetPassword(info));
+    if (!info) {
+      dispatch(updateError({ error: "Please fill out" }));
+    } else {
+      e.preventDefault();
+      console.log("Submit", info);
+      async function submitToreset() {
+        await dispatch(resetPassword(info));
+      }
+      submitToreset();
+      setLoading(true);
     }
-    submitToreset();
   };
   return (
     <div className="row w-100">
       <div className="col-sm-6 reset-background"></div>
       <div className="col-sm-6 reset-wrapper">
-        <div className="reset-wrapper-content">
+        <div className="reset-wrapper-content position-relative">
+          {isloading && (
+            <div className=" my-auto text-center position-absolute h-100 opacity-50 bg-white w-100 d-flex align-items-center justify-content-center">
+              <Spinner color="primary" />
+            </div>
+          )}
           <div className="reset-title">Reset your password</div>
           <form>
-            <div className="send-otp">
-              <p>Email</p>
-              <input
-                className="mb-4 w-100"
-                name="userEmail"
-                onChange={handleChangeInputText}
-                required
-                placeholder="Enter your email"
-              />
-            </div>
-
             <p>New password</p>
             <input
               name="newPassword"
@@ -61,7 +68,7 @@ export const ResetPassword = () => {
               className="mb-4"
               onChange={handleChangeInputText}
               required
-              type="password"
+              type="text"
               placeholder="Enter your OTP"
             />
 
