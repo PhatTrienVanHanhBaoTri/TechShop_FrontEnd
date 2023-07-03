@@ -100,6 +100,18 @@ function Nav(props) {
           </NavLink>
         </li>
       )}
+
+      {state.user.data.roleID === 1 && (
+        <li className="nav-item pt-md-3 m-3">
+          <NavLink
+            className="text-nowrap"
+            activeClassName="active"
+            to="/ManageCoupons"
+          >
+            Manage Coupons
+          </NavLink>
+        </li>
+      )}
       {/* <button onClick={() => console.log(state)}>console</button> */}
     </ul>
   );

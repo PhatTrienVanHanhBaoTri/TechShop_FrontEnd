@@ -18,6 +18,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import "./_app.scss";
 import ManageProduct from "pages/ManageProduct/ManageProduct";
+import ManageCoupon from "pages/ManageCoupon/ManageCoupon";
 import { useSelector } from "react-redux";
 
 function App() {
@@ -53,6 +54,12 @@ function App() {
 
                 <Route path={["/ManageProducts", "/ManageProducts/:id"]}>
                   <ManageProduct
+                    authorized={state.user.data.roleID === 1 ? true : false}
+                  />
+                </Route>
+
+                <Route path={["/ManageCoupons", "/ManageCoupons/:id"]}>
+                  <ManageCoupon
                     authorized={state.user.data.roleID === 1 ? true : false}
                   />
                 </Route>
