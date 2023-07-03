@@ -6,6 +6,7 @@
  * TAM THOI CHUA DUNG DEN
  */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import CouponApi from "api/couponApi";
 import ProductApi from "api/productApi";
 
 // 'product/getListProduct' is prefix
@@ -25,10 +26,19 @@ export const getAllProducts = createAsyncThunk(
   }
 );
 
+export const getAllCoupons = createAsyncThunk(
+  "product/getAllCoupons",
+  async () => {
+    const listCoupon = await CouponApi.getAllCoupons();
+    return listCoupon;
+  }
+);
+
 const product = createSlice({
   name: "product",
   initialState: {
     data: [],
+    couponsList: []
   },
   reducers: {},
   extraReducers: {
@@ -50,6 +60,16 @@ const product = createSlice({
       state.data = action.payload;
     },
     [getAllProducts.rejected]: (state) => {
+      //console.log('false fetching list')
+    },
+    [getAllCoupons.pending]: (state) => {
+      //console.log('pending fetching list')
+    },
+    [getAllCoupons.fulfilled]: (state, action) => {
+      //console.log('fetching successfully')
+      state.couponsList = action.payload;
+    },
+    [getAllCoupons.rejected]: (state) => {
       //console.log('false fetching list')
     },
   },
