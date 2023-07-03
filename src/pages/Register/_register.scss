@@ -87,6 +87,9 @@
         margin-top: 2rem;
 
         form {
+          .form-input {
+            column-gap: 1rem;
+          }
           h6,
           p,
           > a {
