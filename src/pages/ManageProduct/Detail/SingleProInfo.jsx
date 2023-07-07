@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import WishIcon from "components/common/WishIcon/wishIcon";
 import parseImages from "helpers/parseImages";
 import PropTypes from "prop-types";
@@ -53,7 +54,11 @@ function SingleProInfo(props) {
       <div className="row">
         <div className="col-lg-5">
           <div className="single-pro-slider">
-            <img src={activeImage} alt="apple-watch" />
+            <img
+              src={product.images}
+              alt="image"
+              style={{ width: 300, height: 200 }}
+            />
             <WishIcon id={product.productID} />
           </div>
         </div>

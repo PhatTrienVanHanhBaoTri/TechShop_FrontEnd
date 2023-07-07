@@ -17,7 +17,7 @@ function TopProduct(props) {
   return (
     <div className="d-flex justify-content-center top-product">
       <div className="product-info">
-        <img src={images[0]} alt={product.productName} />
+        <img src={product.images} alt={product.productName} />
         <div className="button">
           <BtnMore />
           <BtnAdd product={productData} />

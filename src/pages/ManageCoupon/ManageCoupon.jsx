@@ -71,12 +71,11 @@ export default function ManageCoupon({ authorized }) {
   const handleSearch = () => {
     if (search !== "") {
       coupons = allCoupons;
-      let search_results = allCoupons.filter(
-        (item) =>
-          item.couponCode
-            .trim()
-            .toLowerCase()
-            .includes(search.trim().toLowerCase())
+      let search_results = allCoupons.filter((item) =>
+        item.couponCode
+          .trim()
+          .toLowerCase()
+          .includes(search.trim().toLowerCase())
       );
       setPagination(calculateRange(search_results, 5));
       setCoupons(sliceData(search_results, page, 5));
@@ -238,10 +237,11 @@ export default function ManageCoupon({ authorized }) {
                               alignItems: "center",
                             }}
                           >
-                              
                             <div>
                               <span style={{ fontSize: "15px" }}>
-                                {(coupon.couponType === "PERCENT") ? "-" + coupon.value + "%" : "-" + handlePrice(coupon.value) + "đ"}
+                                {coupon.couponType === "PERCENT"
+                                  ? "-" + coupon.value + "%"
+                                  : "-" + handlePrice(coupon.value) + "đ"}
                               </span>
                             </div>
                           </td>
@@ -271,9 +271,7 @@ export default function ManageCoupon({ authorized }) {
                               fontSize: "13px",
                             }}
                           >
-                            <Link
-                              to={`/ManageCoupons/${coupon.id}/edit`}
-                            >
+                            <Link to={`/ManageCoupons/${coupon.id}/edit`}>
                               <span
                                 style={{
                                   color: "#e8b754",
@@ -332,6 +330,7 @@ export default function ManageCoupon({ authorized }) {
                                   variant="secondary"
                                   onClick={() => setShow(false)}
                                   className="px-4"
+                                  style={{ color: "#E77733" }}
                                 >
                                   No
                                 </Button>
