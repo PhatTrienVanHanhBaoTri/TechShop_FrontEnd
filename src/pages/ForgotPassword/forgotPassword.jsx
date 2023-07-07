@@ -37,6 +37,7 @@ export const ForgotPassword = () => {
       }
       submitToSendOTP();
       dispatch(updateEmail({ userEmail: email }));
+
       // setLoading(true);
     }
   };
