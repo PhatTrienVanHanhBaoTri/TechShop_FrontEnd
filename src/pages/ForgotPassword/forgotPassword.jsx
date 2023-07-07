@@ -37,8 +37,6 @@ export const ForgotPassword = () => {
       }
       submitToSendOTP();
       dispatch(updateEmail({ userEmail: email }));
-
-      // setLoading(true);
     }
   };
   return (
@@ -74,7 +72,7 @@ export const ForgotPassword = () => {
               >
                 Send OTP
               </button>
-              <button className="btn-secondary px-3 py-2">
+              <button className="btn-secondary px-3 py-2 mt-2">
                 <Link to="/login">Back to Login</Link>
               </button>
             </div>
