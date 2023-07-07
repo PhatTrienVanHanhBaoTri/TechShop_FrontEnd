@@ -27,9 +27,9 @@ const UserApi = {
     return axiosClient.get(url);
   },
     register: async (params) => {
-    let { email, fullname, pswd, dob, phone, address, gender} = params;
+    let { email, fullname, pswd, phone, address, gender, dob} = params;
     const url = `${UrlConstant.REGISTER}`;
-    const data = JSON.stringify({ email, fullname, pswd, dob, phone, address, gender });
+    const data = JSON.stringify({ email, fullname, pswd, phone, address, gender, dob });
 
     return axiosClient
       .post(url, data)
@@ -37,6 +37,7 @@ const UserApi = {
         return response;
       })
       .catch((error) => {
+        console.log(error);
         return Promise.reject(error);
       });
   },
@@ -71,7 +72,6 @@ const UserApi = {
     let {  emailAddress, otp } = params;
     const url = `${UrlConstant.VERIFY_EMAIL}`;
     const data = JSON.stringify({   emailAddress,otp });
-    console.log(data);
     return axiosClient
       .post(url, data)
       .then((response) => {

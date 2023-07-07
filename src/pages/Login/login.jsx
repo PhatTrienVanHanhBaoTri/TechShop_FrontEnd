@@ -37,7 +37,7 @@ function Login() {
 
   useEffect(() => {
     setLoading(false);
-
+    dispatch(updateError({ error: "" }));
     window.scrollTo(0, 0);
     const checkLoggedInStatus = () => {
       const status = cookiesService.getCookies("user");

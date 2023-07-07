@@ -16,7 +16,9 @@ export const login = createAsyncThunk("user/login", async (params) => {
 });
 
 export const register = createAsyncThunk("user/register", async (params) => {
+  console.log("register" , params)
   const token = await UserApi.register(params);
+  console.log("token" , token)
   return token;
 });
 
@@ -81,7 +83,6 @@ const user = createSlice({
   },
   extraReducers: {
     [login.pending]: (state) => {
-      //console.log("pending get token");
     },
     [login.fulfilled]: (state, action) => {
       state.data.isLoggedIn = true;

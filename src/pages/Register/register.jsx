@@ -18,6 +18,7 @@ export const Register = () => {
   const [info, setInfo] = useState({});
   const history = useHistory();
   const [isloading, setLoading] = useState(false);
+  const [isSubmit, setSubmit] = useState(false);
 
   const { isSuccess, error } = useSelector((state) => state.user.data);
   const handleChangeInputText = (e) => {
@@ -29,23 +30,27 @@ export const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setSubmit(true);
     async function submitToRegister() {
       await dispatch(register(info));
     }
-    submitToRegister();
-    dispatch(updateEmail({ userEmail: info.email }));
-    setLoading(true);
+    if (Object.keys(info).length === 7) {
+      submitToRegister();
+      dispatch(updateEmail({ userEmail: info.email }));
+      setLoading(true);
+    } else {
+      dispatch(updateError({ error: "Please enter your information" }));
+    }
   };
   useEffect(() => {
     setLoading(false);
-    dispatch(updateError({ error: "" }));
-
+    if (!isSubmit) dispatch(updateError({ error: "" }));
     window.scrollTo(0, 0);
     if (isSuccess) {
       dispatch(updateStatus({ isSuccess: false }));
       history.push("/login");
     }
-  }, [isSuccess, history, dispatch]);
+  }, [isSuccess, history, isSubmit, error]);
   return (
     <div className="row w-100">
       <div className="col-sm-5 register-background"></div>
