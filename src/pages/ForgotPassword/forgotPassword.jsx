@@ -19,26 +19,25 @@ export const ForgotPassword = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(updateError({ error: "" }));
     setLoading(false);
     if (isSuccess) {
       dispatch(updateStatus({ isSuccess: false }));
       history.push("/reset-password");
     }
-  }, [isSuccess, history, dispatch]);
+  }, [isSuccess, history]);
 
   const handleSubmit = async (e) => {
+    dispatch(updateError({ error: "" }));
     if (!email) {
       updateError({ error: "Please enter your email" });
     } else {
-      dispatch(updateError({ error: "" }));
       e.preventDefault();
       async function submitToSendOTP() {
         await dispatch(forgotPassword(email));
       }
       submitToSendOTP();
       dispatch(updateEmail({ userEmail: email }));
-      setLoading(true);
+      // setLoading(true);
     }
   };
   return (
