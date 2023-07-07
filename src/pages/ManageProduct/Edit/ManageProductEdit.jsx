@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import ProductApi from "api/productApi";
 import CategoryApi from "api/categoryApi";
 import BrandApi from "api/brandApi";
@@ -12,6 +13,9 @@ import {
 import { Button, Form, Modal, ModalHeader } from "react-bootstrap";
 import "../Style/style.css";
 import { getAllProducts } from "utilities/slices/productSlice";
+import { storage } from "../../../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 } from "uuid";
 
 function ManageProductDetail() {
   const dispatch = useDispatch();
@@ -40,6 +44,8 @@ function ManageProductDetail() {
   const [spec4, setSpec4] = useState("");
 
   const [show, setShow] = useState(false);
+  const [imageUpload, setImageUpload] = useState(null);
+  const [imageURL, setImageURL] = useState("");
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -55,6 +61,7 @@ function ManageProductDetail() {
       );
 
       setProduct(response);
+      setImageURL(response.images);
 
       setCategories(response_categories);
       setBrands(response_brands);
@@ -83,6 +90,17 @@ function ManageProductDetail() {
     };
   }, [dispatch, id]);
 
+  const uploadImage = () => {
+    if (imageUpload === null) return;
+    const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
+    uploadBytes(imageRef, imageUpload).then((snaphsot) => {
+      getDownloadURL(snaphsot.ref).then((url) => {
+        setImageURL(url);
+        product.images = url;
+      });
+    });
+  };
+
   const renderProductDetail = () => {
     if (product === null || categories === null || brands === null) {
       return (
@@ -94,7 +112,15 @@ function ManageProductDetail() {
     return (
       <Form className="d-flex flex-column">
         <div className="my-4">
-          <img src={product.images} alt="Ảnh" />
+          <img src={imageURL} alt="Image" style={{ width: 300, height: 200 }} />
+          <br />
+          <input
+            type="file"
+            onChange={(event) => {
+              setImageUpload(event.target.files[0]);
+            }}
+          />
+          <input type="button" onClick={uploadImage} value="Upload Image" />
         </div>
 
         <div className="d-flex flex-row justify-content-between my-4">

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import ProductApi from "api/productApi";
 import CategoryApi from "api/categoryApi";
 import BrandApi from "api/brandApi";
@@ -12,6 +13,9 @@ import {
 import { Button, Form } from "react-bootstrap";
 import "../Style/style.css";
 import { getAllProducts } from "utilities/slices/productSlice";
+import { storage } from "../../../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 } from "uuid";
 
 function ManageProductAdd() {
   const dispatch = useDispatch();
@@ -82,6 +86,16 @@ function ManageProductAdd() {
     };
   }, [dispatch]);
 
+  const [imageUpload, setImageUpload] = useState(null);
+  const [imageURL, setImageURL] = useState("");
+  const uploadImage = () => {
+    if (imageUpload === null) return;
+    const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
+    uploadBytes(imageRef, imageUpload).then((snaphsot) => {
+      getDownloadURL(snaphsot.ref).then((url) => setImageURL(url));
+    });
+  };
+
   const renderProductAdd = () => {
     if (categories === null || brands === null) {
       return (
@@ -93,7 +107,15 @@ function ManageProductAdd() {
     return (
       <Form onSubmit={(e) => handleSubmit(e)}>
         <div className="my-4">
-          <img src="" alt="Ảnh" />
+          <img src={imageURL} alt="Image" style={{ width: 300, height: 200 }} />
+          <br />
+          <input
+            type="file"
+            onChange={(event) => {
+              setImageUpload(event.target.files[0]);
+            }}
+          />
+          <input type="button" onClick={uploadImage} value="Upload Image" />
         </div>
 
         <div className="d-flex flex-row justify-content-between my-4">
@@ -454,7 +476,7 @@ function ManageProductAdd() {
       spec4: spec4,
       shortTech: shortTech,
       totalReviews: 0,
-      images: "",
+      images: imageURL,
     };
 
     const addProduct = async (data) => {
