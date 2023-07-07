@@ -59,7 +59,7 @@ function Login() {
       <div className="col-sm-6 login-wrapper">
         <div className="login-wrapper-content position-relative">
           {isloading && (
-            <div className=" my-auto text-center position-absolute h-100 opacity-50 bg-white w-100 d-flex align-items-center justify-content-center">
+            <div className="spinner my-auto text-center position-absolute h-100 opacity-50 bg-white w-100 d-flex align-items-center justify-content-center">
               <Spinner color="primary" />
             </div>
           )}
@@ -82,6 +82,7 @@ function Login() {
               type="password"
               placeholder="Enter your password"
             />
+
             <div className="forgot-password pt-1">
               <Link to="/forgot-password">
                 <p className="">Forgot password?</p>
