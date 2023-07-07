@@ -342,6 +342,7 @@ function ManageProductDetail() {
                 variant="secondary"
                 onClick={() => setShow(false)}
                 className="px-4"
+                style={{ color: "#E77733" }}
               >
                 No
               </Button>
