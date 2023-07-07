@@ -8,13 +8,16 @@ import {
   addNewBreadcrumb,
   removeLastBreadcrumb
 } from "utilities/slices/breadcrumbSlice";
-import { clearAll } from "utilities/slices/cartSlice";
+import { applyCoupon, clearAll } from "utilities/slices/cartSlice";
 import BillingDetails from "./BillingDetails/billingDetails";
 import Order from "./Order/order";
 import "./_checkOut.scss";
+import { cookiesService } from "helpers/cookiesService";
+
 
 function CheckOut(props) {
   const productsInCart = useSelector((state) => state.cart.products);
+  const currentCoupon = useSelector((state) => state.cart.currentCoupon);
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -38,21 +41,46 @@ function CheckOut(props) {
   };
 
   const placeOrder = (shippingInfo) => {
+    if (currentCoupon) {
+      shippingInfo.couponID = currentCoupon.id;
+    }
+    let user = null;
+    user = cookiesService.getCookies("user");
+
     let orderInfo = [];
     for (let product of productsInCart) {
       let tempProduct = {
         productID: product.id,
+        productPrice: 0,
         quantity: product.quantity,
+        totalPrice: 0,
+        productName: product.name,
+        images: "",
+        categorySlug: product.slug,
+        reviewed: false 
       };
       orderInfo.push(tempProduct);
     }
     let data = {
       detailedInvoices: orderInfo,
-      shippingInfo: shippingInfo,
+      fullName: shippingInfo.fullname,
+      userID: user.userID,
+      phone: shippingInfo.phone,
+      address: shippingInfo.address,
+      email: user.email,
+      totalPrice: 0,
+      note: "Không có",
+      statusInvoice: null,
+      shippingDate: null,
+      invoiceDate: null,
+      couponID: shippingInfo.couponID ? shippingInfo.couponID : 0
     };
 
-    const placeOrder = async (data) => {
+    const placeOrder = async (data) => {  
+      dispatch(applyCoupon(null));
       setLoading(true);
+
+      // console.log(data)
       return OrderApi.placeOrder(data)
         .then((res) => {
           //console.log(res);

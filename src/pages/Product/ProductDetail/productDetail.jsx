@@ -10,7 +10,7 @@ import {
 } from "utilities/slices/breadcrumbSlice";
 import SingleProInfo from "./SingleProInfo/singleProInfo";
 import SingleProTab from "./SingleProTab/singleProTab";
-import ReviewApi from 'api/reviewApi';
+import ReviewApi from "api/reviewApi";
 
 function ProductDetail() {
   const dispatch = useDispatch();

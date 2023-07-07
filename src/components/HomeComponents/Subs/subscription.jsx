@@ -1,6 +1,5 @@
 import React from "react";
-import './_subscription.scss'
-
+import "./_subscription.scss";
 
 function Subscription() {
   return (
@@ -27,6 +26,5 @@ function Subscription() {
     </div>
   );
 }
-
 
 export default Subscription;

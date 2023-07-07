@@ -1,9 +1,12 @@
 import * as UrlConstant from "utilities/UrlConstant";
 import axiosClientAuthen from "./axiosClientAuthen";
+import axiosClient from "./axiosClient";
+
+
 const OrderApi = {
-  getAllCompletedOrders: async () => {
-    const url = `${UrlConstant.GET_ALL_COMPLETED_ORDER}`;
-    return axiosClientAuthen.get(url);
+  getAllCompletedOrders: async (id) => {
+    const url = `${UrlConstant.GET_ALL_COMPLETED_ORDER}/${id}`;
+    return axiosClient.get(url);
   },
   getDetailedOrder: async (id) => {
     const url = `${UrlConstant.GET_DETAILED_ORDER}/${id}`;
@@ -13,9 +16,8 @@ const OrderApi = {
     const url = `${UrlConstant.PLACE_ORDER}`;
     const body = JSON.stringify(params);
 
-    return axiosClientAuthen
+    return axiosClient
       .post(url, body)
-
       .then((response) => {
         return response;
       })

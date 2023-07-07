@@ -51,7 +51,17 @@ function SingleProTab(props) {
           warranty: product.warranty,
         };
         setTabContent(
-          <SpecsTab specs={product.specs} generalInfo={generalInfo} />
+          <SpecsTab
+            specName1={product.specName1}
+            spec1={product.spec1}
+            specName2={product.specName2}
+            spec2={product.spec2}
+            specName3={product.specName3}
+            spec3={product.spec3}
+            specName4={product.specName4}
+            spec4={product.spec4}
+            generalInfo={generalInfo}
+          />
         );
         break;
       default:

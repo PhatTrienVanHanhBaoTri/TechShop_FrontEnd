@@ -24,8 +24,12 @@ const cart = createSlice({
   name: "cart",
   initialState: {
     products: initialStateCart(),
+    currentCoupon: null
   },
   reducers: {
+    applyCoupon: (state, action) => {
+      state.currentCoupon = action.payload;
+    },
     addToCart: (state, action) => {
       state.products =
         cookiesService.getCookies("cart") === undefined
@@ -122,6 +126,7 @@ const cart = createSlice({
 });
 export default cart.reducer;
 export const {
+  applyCoupon,
   addToCart,
   removeFromCart,
   updateQuantity,

@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import Search from "pages/Header/Search/search";
 import "./_nav.scss";
 import { getCategories } from "utilities/slices/categorySlice";
 
 function Nav(props) {
   const stateCategories = useSelector((state) => state.category);
   const dispatch = useDispatch();
+  const state = useSelector((state) => state);
 
   // get categories
   useEffect(() => {
@@ -37,52 +37,82 @@ function Nav(props) {
 
   return (
     <ul className="pl-md-3 navbar-nav m-auto mb-lg-0 d-flex justify-item-center align-items-center">
-      {/* <div> */}
-      <Search />
-      {/* </div> */}
-      <li className="nav-item pt-md-3 m-3">
-        <NavLink
-          className="text-nowrap"
-          activeClassName="active"
-          to="/home"
-          exact
-        >
-          Home
-        </NavLink>
-      </li>
+      {state.user.data.roleID !== 1 && (
+        <li className="nav-item pt-md-3 m-3">
+          <NavLink
+            className="text-nowrap"
+            activeClassName="active"
+            to="/home"
+            exact
+          >
+            Home
+          </NavLink>
+        </li>
+      )}
 
-      <li className="nav-item pt-md-3 m-3 dropdown-switcher">
-        <NavLink
-          className="text-nowrap"
-          activeClassName="active"
-          to="/products"
-        >
-          Products
-        </NavLink>
-        <div className="dropdown d-md-block d-none">
-          <Row>{renderCategoryModal(stateCategories.data)}</Row>
-        </div>
-      </li>
+      {state.user.data.roleID !== 1 && (
+        <li className="nav-item pt-md-3 m-3 dropdown-switcher">
+          <NavLink
+            className="text-nowrap"
+            activeClassName="active"
+            to="/products"
+          >
+            Products
+          </NavLink>
+          <div className="dropdown d-md-block d-none">
+            <Row>{renderCategoryModal(stateCategories.data)}</Row>
+          </div>
+        </li>
+      )}
 
-      <li className="nav-item pt-md-3 m-3">
-        <NavLink
-          className="text-nowrap"
-          activeClassName="active"
-          to="/wish-list"
-        >
-          Wish List
-        </NavLink>
-      </li>
+      {state.user.data.roleID !== 1 && (
+        <li className="nav-item pt-md-3 m-3">
+          <NavLink
+            className="text-nowrap"
+            activeClassName="active"
+            to="/wish-list"
+          >
+            Wish List
+          </NavLink>
+        </li>
+      )}
 
-      <li className="nav-item pt-md-3 m-3">
-        <NavLink
-          className="text-nowrap"
-          activeClassName="active"
-          to="/contacts"
-        >
-          Contacts
-        </NavLink>
-      </li>
+      {state.user.data.roleID !== 1 && (
+        <li className="nav-item pt-md-3 m-3">
+          <NavLink
+            className="text-nowrap"
+            activeClassName="active"
+            to="/contacts"
+          >
+            Contacts
+          </NavLink>
+        </li>
+      )}
+
+      {state.user.data.roleID === 1 && (
+        <li className="nav-item pt-md-3 m-3">
+          <NavLink
+            className="text-nowrap"
+            activeClassName="active"
+            to="/ManageProducts"
+          >
+            Manage Products
+          </NavLink>
+        </li>
+      )}
+
+      {state.user.data.roleID === 1 && (
+        <li className="nav-item pt-md-3 m-3">
+          <NavLink
+            className="text-nowrap"
+            activeClassName="active"
+            to="/ManageCoupons"
+          >
+            Manage Coupons
+          </NavLink>
+        </li>
+      )}
+      {/* <button onClick={() => console.log(state)}>console</button> */}
     </ul>
   );
 }

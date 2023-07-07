@@ -2,13 +2,18 @@ import { cookiesService } from "helpers/cookiesService";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, Link } from "react-router-dom";
-import { login, updateLoggedInStatus } from "utilities/slices/userSlice";
+import { Spinner } from "reactstrap";
+import {
+  login,
+  updateLoggedInStatus,
+  updateError,
+} from "utilities/slices/userSlice";
 import "./_login.scss";
-
 function Login() {
   const location = useLocation();
   const history = useHistory();
   const [info, setInfo] = useState({});
+  const [isloading, setLoading] = useState(false);
   const { isLoggedIn, error } = useSelector((state) => state.user.data);
   const dispatch = useDispatch();
 
@@ -16,18 +21,24 @@ function Login() {
     let name = e.target.name;
     let value = e.target.value;
     setInfo({ ...info, [name]: value });
+    dispatch(updateError({ error: "" }));
   };
 
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
-
     async function submitToLogin() {
       await dispatch(login(info));
+      setLoading(false);
     }
     submitToLogin();
+    setLoading(true);
   };
 
   useEffect(() => {
+    setLoading(false);
+    dispatch(updateError({ error: "" }));
+    window.scrollTo(0, 0);
     const checkLoggedInStatus = () => {
       const status = cookiesService.getCookies("user");
       if (status === undefined && isLoggedIn)
@@ -43,14 +54,21 @@ function Login() {
   }, [isLoggedIn, history, location, dispatch]);
 
   return (
-    <div className="row">
+    <div className="row w-100">
       <div className="col-sm-6 login-background"></div>
       <div className="col-sm-6 login-wrapper">
-        <div className="login-wrapper-content">
-          <div className="login-title">Welcome to TechShop</div>
+        <div className="login-wrapper-content position-relative">
+          {isloading && (
+            <div className="spinner my-auto text-center position-absolute h-100 opacity-50 bg-white w-100 d-flex align-items-center justify-content-center">
+              <Spinner color="primary" />
+            </div>
+          )}
+
+          <div className="login-title mb-4">Welcome to TechShop</div>
           <form>
             <p>Email</p>
             <input
+              className="mb-4"
               name="email"
               onChange={handleChangeInputText}
               required
@@ -64,68 +82,33 @@ function Login() {
               type="password"
               placeholder="Enter your password"
             />
+
+            <div className="forgot-password pt-1">
+              <Link to="/forgot-password">
+                <p className="">Forgot password?</p>
+              </Link>
+            </div>
+            <div className="mb-2" style={{ color: "red" }}>
+              {error}
+            </div>
             <div className="text-center">
-              <button onClick={handleSubmit} className="btn mb-3">
+              <button
+                onClick={handleSubmit}
+                className="btn-primary mb-2 px-3 py-2"
+              >
                 Get Started
               </button>
-              <Link to="/register">Create account</Link>
+              <p className="my-3" style={{ fontSize: "0.85rem" }}>
+                Do not have account?
+              </p>
+              <button className="btn-secondary px-3 py-2">
+                <Link to="/register">Register account</Link>
+              </button>
             </div>
           </form>
-          <div>{error}</div>
         </div>
       </div>
     </div>
-    // <div className="login-wrapper">
-    //   <div className="container">
-    //     <div className="screen">
-    //       <div className="screen__content">
-    //         <form className="login">
-    //           <div className="login__field">
-    //             <i className="login__icon fas fa-user"></i>
-    //             <input
-    //               name="email"
-    //               onChange={handleChangeInputText}
-    //               required
-    //               type="text"
-    //               className="login__input"
-    //               placeholder="User name / Email"
-    //             />
-    //           </div>
-    //           <div className="login__field">
-    //             <i className="login__icon fas fa-lock"></i>
-
-    //             <input
-    //               name="pswd"
-    //               onChange={handleChangeInputText}
-    //               required
-    //               type="password"
-    //               className="login__input"
-    //               placeholder="Password"
-    //             />
-    //           </div>
-    //           <button className="button login__submit" onClick={handleSubmit}>
-    //             <span className="button__text">Log In Now</span>
-    //             <i className="button__icon fas fa-chevron-right"></i>
-    //           </button>
-    //         </form>
-    //         <div className="social-login">
-    //           <h3>log in via</h3>
-    //           <div className="social-icons">
-    //             <a href="#" className="social-login__icon fab fa-instagram"></a>
-    //             <a href="#" className="social-login__icon fab fa-facebook"></a>
-    //             <a href="#" className="social-login__icon fab fa-twitter"></a>
-    //           </div>
-    //         </div>
-    //       </div>
-    //       <div className="screen__background">
-    //         <span className="screen__background__shape screen__background__shape4"></span>
-    //         <span className="screen__background__shape screen__background__shape3"></span>
-    //         <span className="screen__background__shape screen__background__shape2"></span>
-    //         <span className="screen__background__shape screen__background__shape1"></span>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
   );
 }
 

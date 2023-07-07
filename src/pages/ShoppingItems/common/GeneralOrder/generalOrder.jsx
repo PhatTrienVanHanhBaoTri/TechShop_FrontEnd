@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-concat */
+/* eslint-disable react-hooks/exhaustive-deps */
 import PaymentDetail from "components/ShoppingItemsComponents/PaymentDetail/paymentDetail";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -6,6 +8,9 @@ import handlePrice from "helpers/formatPrice";
 
 function GeneralOrder() {
   const productsInCart = useSelector((state) => state.cart.products);
+  const currentCoupon = useSelector((state) => state.cart.currentCoupon);
+  const [currCoupon, setCurrCoupon] = useState("");
+
 
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -17,9 +22,30 @@ function GeneralOrder() {
         0
       );
       //console.log(price)
+
+      if (currentCoupon) {
+        if (currentCoupon.couponType === "PERCENT") {
+          let i = price * currentCoupon.value / 100;
+
+          price -= i;
+        } else if (currentCoupon.couponType === "MONEY") {
+          price -= currentCoupon.value 
+        }
+      }
+
       setTotalPrice(price);
     }
-  }, [productsInCart]);
+  }, [productsInCart, currentCoupon]);
+
+  useEffect(() => {
+    if (currentCoupon) {
+      if (currentCoupon.couponType === "PERCENT") {
+        setCurrCoupon(`-${currentCoupon.value}` + "%");
+      } else if (currentCoupon.couponType === "MONEY") {
+        setCurrCoupon("-" + handlePrice(currentCoupon.value));
+      }
+    }
+  }, [currentCoupon]);
 
   
 
@@ -32,10 +58,12 @@ function GeneralOrder() {
     <table className="table-payment">
       <tbody>
         {renderPaymentDetails(productsInCart)}
-        {/* <tr className="payment-detail">
-          <td>Coupon Discount</td>
-          <td className="discount">-500.000</td>
-        </tr> */}
+        {currentCoupon && (
+          <tr className="payment-detail">
+            <td>Coupon Discount</td>
+            <td className="discount">{currCoupon} {currentCoupon.couponType === "MONEY" ? <u>đ</u> : ""}</td>
+          </tr>
+        )}
       </tbody>
       <tfoot>
         <tr className="payment-detail">
