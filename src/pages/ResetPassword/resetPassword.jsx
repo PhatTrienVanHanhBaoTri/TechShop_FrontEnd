@@ -18,6 +18,7 @@ export const ResetPassword = () => {
     setInfo({ ...info, userEmail: userEmail });
     window.scrollTo(0, 0);
     setLoading(false);
+    console.log(error);
     if (isSuccess) history.push("/login");
   }, [isSuccess, history, dispatch, userEmail]);
 
@@ -39,6 +40,7 @@ export const ResetPassword = () => {
       }
       submitToreset();
       setLoading(true);
+      if (error !== "") setLoading(false);
     }
   };
   return (

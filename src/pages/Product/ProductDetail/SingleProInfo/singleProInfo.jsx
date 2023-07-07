@@ -53,7 +53,11 @@ function SingleProInfo(props) {
       <div className="row">
         <div className="col-lg-5">
           <div className="single-pro-slider">
-            <img src={activeImage} alt="apple-watch" />
+            <img
+              src={product.images}
+              alt="apple-watch"
+              style={{ width: 300, height: 200 }}
+            />
             <WishIcon id={product.productID} />
           </div>
         </div>
