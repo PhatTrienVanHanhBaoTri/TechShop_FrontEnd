@@ -52,7 +52,6 @@ export const VerifyEmail = () => {
         await dispatch(verifyEmail(info));
       }
       submitToSendOTP();
-      setLoading(true);
     }
   };
   return (
