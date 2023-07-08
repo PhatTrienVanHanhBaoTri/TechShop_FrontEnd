@@ -48,7 +48,7 @@ export const Register = () => {
     window.scrollTo(0, 0);
     if (isSuccess) {
       dispatch(updateStatus({ isSuccess: false }));
-      history.push("/login");
+      history.push("/verify-email");
     }
   }, [isSuccess, history, isSubmit, error]);
   return (
